@@ -1,10 +1,6 @@
 @import "root.css";
 
 header {
-  height: var(--header-height);
-}
-
-header {
   position: fixed;
   top: 0;
   left: 0;
@@ -56,5 +52,8 @@ header .header-navigation .header-button span {
   top: 6px;
 }
 
-
+.main-container {
+  position: relative;
+  margin-top: var(--header-height);
+}
 

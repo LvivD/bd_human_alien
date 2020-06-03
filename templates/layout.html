@@ -15,25 +15,25 @@
             </section>
             
             <section class='header-navigation'>
-            <a href="about.html">
+            <a href="/about">
                 <div class='header-button'>
                     About
                 </div>
             </a>
     
-            <a href="human.html">
+            <a href="/human">
                 <div class='header-button'>
                     Human
                 </div>
             </a>
     
-            <a href="alien.html">
+            <a href="/alien">
                 <div class='header-button'>
                     Alien
                 </div>
             </a>
     
-            <a href="home.html">
+            <a href="/home">
                 <div class='header-button'>
                     Home
                 </div>
@@ -43,7 +43,9 @@
             </section>
         </header>
 
-
-        {% block body %}{% endblock %}
+        <div class="main-container">
+            {% block body %}{% endblock %}
+        </div>
+        
     </body>
 </html>
