@@ -24,15 +24,18 @@ def login():
     return render_template('login.html', title='Sign In', form=form)
 
 @app.route('/logout')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('index'))
 
 @app.route("/")
+@login_required
 def index():
     return redirect("/home")
 
 @app.route("/home")
+@login_required
 def home():
     try:
         print(current_user.id)
@@ -41,6 +44,7 @@ def home():
     return render_template("home.html")
 
 @app.route("/alien")
+@login_required
 def alien():
     try:
         print(current_user.id)
@@ -49,6 +53,7 @@ def alien():
     return render_template("alien.html")
 
 @app.route("/human")
+@login_required
 def human():
     try:
         print(current_user.id)

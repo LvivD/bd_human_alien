@@ -7,6 +7,14 @@ from app import login
 
 class db:
     @staticmethod
+    def connect(username):
+        pass
+
+    @staticmethod
+    def disconnect(username):
+        pass
+
+    @staticmethod
     def get_id_by_username(username):
         return username
 
