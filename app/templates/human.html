@@ -1,10 +1,37 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<div class="main-container">
-    <form>
-        
-    </form>
+<div class="body-page-element">
+    <h1 class="header-element">
+        "Hello, <USERNAME>, <USERROLE>"
+    </h1>
+    <h2 class="header-element">
+        Chose an action
+    </h2>
+    <div class="main-element">
+        <div class="dropdown">
+            <button class="dropbtn">Chose an action</button>
+            <div class="dropdown-content">
+              <a href="#">Kill</a>
+              <a href="#">Escape</a>
+            </div>
+          </div>
+    </div>
+    <h2 class="header-element">
+        View logs
+    </h2>
+    <div class="main-element">
+        <div class="dropdown">
+            <button class="dropbtn">View logs</button>
+            <div class="dropdown-content">
+                <a href="#">Ships</a> 
+                <a href="#">Steal</a>
+                <a href="#">Kill</a>
+                <a href="#">Steal and Kill</a>
+                <a href="#">Experiment</a>
+            </div>
+          </div>
+    </div>
 </div>
 
 {% endblock %}

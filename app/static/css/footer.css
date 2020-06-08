@@ -1,0 +1,11 @@
+.page-footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+}
+
+.page-subfooter {
+    position: absolute;
+    left: 0;
+    bottom: 3em;
+}
