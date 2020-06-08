@@ -53,6 +53,10 @@ class DB:
     def get_hash_by_id(id):
         return generate_password_hash(id)
 
+    @staticmethod
+    def get_user_info_by_id(id):
+        return 'human'
+
 @login.user_loader
 def load_user(username):
     return User.get_user(username=username)
@@ -68,7 +72,7 @@ class User(UserMixin):
         return self.id
 
     def upload_data(self):
-        self.username, self.role, self.password_hash = DB.get_user_info_by_id(self.id)
+        self.role = DB.get_user_info_by_id(self.id)
 
     def authenticate(self, password):
         res = check_password_hash(self.password_hash or DB.get_hash_by_id(self.id), str(password))
