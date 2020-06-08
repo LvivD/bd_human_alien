@@ -1,0 +1,27 @@
+@import "colors.css";
+@import "header.css";
+@import "footer.css";
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+.page-header, .page-footer, .page-subfooter {
+    background-color: var(--b1);
+    display: flex;
+    position: fixed;
+}
+
+.header-menu li, .page-footer, .page-subfooter {
+    padding: 0.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2em;
+    background-color: var(--w3);
+    border: 0.1em solid var(--w1);
+    width: 100%;
+    text-align: center;
+    color: var(--b1);
+}

@@ -1,59 +1,39 @@
-@import "root.css";
-
-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-
-  height: var(--header-height);
-  background-color: var(--dark-bg-color);
+g.page-header {
+    left: 0;
+    top: 0;
+    right: 0;
 }
 
-header .header-title {
-  color: var(--header-botton-color);
-  font-family: 'Philosopher', sans-serif;
-  padding: 10px 20px;
-  font-size: 40px;
-  color: var(--header-text-color);
-  
-  position: relative;
-  float: left;
+.header-menu {
+    width: 100%;
+    display: inherit;
+    justify-content: space-around;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+    font-size: 1.2em;
 }
 
-header .header-title .header-img {
-  position: relative;
-  float: right;
-  height: var(--header-height);
+.header-menu a {
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+.menu-active {
+    color: var(--red);
 }
 
-header .header-navigation {
-  position: relative;
-  top: 15px;
+@media only screen and (max-width: 1000px) {
+    .header-menu {
+        font-size: 2em;
+        /*flex-direction: column;*/
+    }
 }
 
-header .header-navigation .header-button {
-  font-family: 'Philosopher', sans-serif;
-  font-weight: bold;
-  font-size: 25px;
-  float: right;
-  position: relative;
-  height: 40px;
-  width: 110px;
-  margin-right: 10px;
-  text-align: center;
-  /* background-color: var(--header-botton-color);
-  border-radius: 5px; */
-  color: var(--header-text-color);
+@media screen and (max-width: 768px) {
+    .header-menu {
+        font-size: 1em;
+        flex-direction: column;
+        justify-content: space-around;
+    }
 }
-
-header .header-navigation .header-button span {
-  position: relative;
-  top: 6px;
-}
-
-.main-container {
-  position: relative;
-  margin-top: var(--header-height);
-}
-
