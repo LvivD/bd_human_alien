@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from app import login
 
 
-class db:
+class DB:
     @staticmethod
     def connect(username):
         pass
@@ -32,29 +32,30 @@ class db:
 
 @login.user_loader
 def load_user(username):
-    active_user = User(username=username)
-    return active_user
+    return User.get_user(username=username)
     
 
 class User(UserMixin):
     def __init__(self, username):
         self.username = username
         self.id = id
-        self.is_authenticated = False
-        self.id = db.get_id_by_username(username)
+        self.id = DB.get_id_by_username(username)
         self.password_hash = False
 
     def if_exists(self):
         return self.id
 
     def authenticate(self, password):
-        if check_password_hash(self.password_hash or db.get_hash_by_id(self.id), password):
-            self.is_authenticated = True
-        else:
-            self.is_authenticated = False
-        return self.is_authenticated
+        return check_password_hash(self.password_hash or DB.get_hash_by_id(self.id), password)
 
-    def is_authenticated(self):
-        return self.is_authenticated
+    def get_id(self):
+        return self.id
+
+    @staticmethod
+    def get_user(username):
+        user = User(username=username)
+        if not user.if_exists():
+            return None
+        return user
 
     

@@ -12,8 +12,8 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User(username=form.username.data)
-        print("if user exist:", user.if_exists())
-        print(user.authenticate(form.password.data))
+        # print("if user exist:", user.if_exists())
+        # print(user.authenticate(form.password.data))
         if not user.if_exists() or not user.authenticate(form.password.data):
             flash('Invalid username or password')
             return redirect(url_for('login'))
@@ -21,7 +21,11 @@ def login():
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('index')
-    return render_template('login.html', title='Sign In', form=form)
+        # print("login next page:",next_page)
+        # print("login remember_me:",form.remember_me.data)
+        # print("login current_user.is_authenticated:",current_user.is_authenticated)
+        return redirect(next_page)
+    return render_template('login.html', form=form)
 
 @app.route('/logout')
 @login_required
@@ -30,33 +34,20 @@ def logout():
     return redirect(url_for('index'))
 
 @app.route("/")
-@login_required
 def index():
     return redirect("/home")
 
 @app.route("/home")
 @login_required
 def home():
-    try:
-        print(current_user.id)
-    except Exception:
-        pass
     return render_template("home.html")
 
 @app.route("/alien")
 @login_required
 def alien():
-    try:
-        print(current_user.id)
-    except Exception:
-        pass
     return render_template("alien.html")
 
 @app.route("/human")
 @login_required
 def human():
-    try:
-        print(current_user.id)
-    except Exception:
-        pass
     return render_template("human.html")
