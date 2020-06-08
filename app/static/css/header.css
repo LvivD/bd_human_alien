@@ -1,0 +1,59 @@
+@import "root.css";
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: var(--header-height);
+  background-color: var(--dark-bg-color);
+}
+
+header .header-title {
+  color: var(--header-botton-color);
+  font-family: 'Philosopher', sans-serif;
+  padding: 10px 20px;
+  font-size: 40px;
+  color: var(--header-text-color);
+  
+  position: relative;
+  float: left;
+}
+
+header .header-title .header-img {
+  position: relative;
+  float: right;
+  height: var(--header-height);
+}
+
+header .header-navigation {
+  position: relative;
+  top: 15px;
+}
+
+header .header-navigation .header-button {
+  font-family: 'Philosopher', sans-serif;
+  font-weight: bold;
+  font-size: 25px;
+  float: right;
+  position: relative;
+  height: 40px;
+  width: 110px;
+  margin-right: 10px;
+  text-align: center;
+  /* background-color: var(--header-botton-color);
+  border-radius: 5px; */
+  color: var(--header-text-color);
+}
+
+header .header-navigation .header-button span {
+  position: relative;
+  top: 6px;
+}
+
+.main-container {
+  position: relative;
+  margin-top: var(--header-height);
+}
+
