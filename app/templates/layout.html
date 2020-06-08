@@ -8,30 +8,32 @@
         <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
     </head>
     <body>
-        <header>
-            <section class='header-element'>
-            I want to believe
-            <!-- <img src="../static/images/we_want_to_believe_1_dark_green.png" class='header-img'></img> -->
-        </header>
-
         <div class="body-page-element">
+            <header>
+                <h1 class='header-element'>
+                I want to believe
+                <!-- <img src="../static/images/we_want_to_believe_1_dark_green.png" class='header-img'></img> -->
+            </header>
+    
+            <div class="main-element">
+                
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                <hr>
+                {% endif %}
+                {% endwith %}
+                
+    
+                {% block body %}
+                
+                {% endblock %}
+            </div>
             
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            <ul>
-                {% for message in messages %}
-                <li style="color: black;">{{ message }}</li>
-                {% endfor %}
-            </ul>
-            <hr>
-            {% endif %}
-            {% endwith %}
-            
-
-            {% block body %}
-            
-            {% endblock %}
         </div>
-        
     </body>
 </html>
