@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="body-page-element">
+    <h1 class="header-element">
+        Hello, admin
+    </h1>
+    <h1 class="header-element">
+        Chose an action
+    </h1>
+    <div class="main-element">
+        <div class="dropdown">
+            <button class="dropbtn">Chose an action</button>
+            <div class="dropdown-content">
+                <a href="#">Add user</a>
+                <a href="#">Destroy a ship</a>
+            </div>
+          </div>
+    </div>
+    <h2 class="header-element">
+        View logs
+    </h2>
+    <div class="main-element">
+        <div class="dropdown">
+            <button class="dropbtn">View logs</button>
+            <div class="dropdown-content">
+                <a href="#">Steals</a>
+                <a href="#">Excursions</a>
+                <a href="#">Total Steals</a>
+                <a href="#">Ships</a>
+            </div>
+          </div>
+    </div>
+</div>
+
+{% endblock %}
