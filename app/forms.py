@@ -12,9 +12,9 @@ class LoginForm(FlaskForm):
 
 
 class HumanLogStealForm(FlaskForm):
+    n = DecimalField(validators=[DataRequired()])
     date1 = DateField(validators=[DataRequired()])
     date2 = DateField(validators=[DataRequired()])
-    n = DecimalField(validators=[DataRequired()])
     submit = SubmitField('Show')
 
 

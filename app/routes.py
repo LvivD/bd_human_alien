@@ -137,3 +137,72 @@ def add_user():
     # if form.validate_on_submit():
     # flash('New user was added.')
     return render_template("adm_logs/total_steals.html", form=form)
+
+
+@app.route("/human_actions/escape", methods=['GET', 'POST'])
+@login_required
+def add_user():
+    form = HumanActionEscapeForm()
+    # if form.validate_on_submit():
+    # flash('New user was added.')
+    return render_template("human_actions/escape.html", form=form)
+
+
+@app.route("/human_actions/kill", methods=['GET', 'POST'])
+@login_required
+def add_user():
+    form = HumanActionKillForm()
+    # if form.validate_on_submit():
+    # flash('New user was added.')
+    return render_template("human_actions/kill.html", form=form,
+                           user=current_user)
+
+
+@app.route("/human_logs/kill", methods=['GET', 'POST'])
+@login_required
+def add_user():
+    form = HumanLogKillForm()
+    # if form.validate_on_submit():
+    # flash('New user was added.')
+    return render_template("human_logs/kill.html", form=form,
+                           user=current_user)
+
+
+@app.route("/human_logs/ships", methods=['GET', 'POST'])
+@login_required
+def add_user():
+    form = HumanLogShipsForm()
+    # if form.validate_on_submit():
+    # flash('New user was added.')
+    return render_template("human_logs/ships.html", form=form,
+                           user=current_user)
+
+
+@app.route("/human_logs/steal", methods=['GET', 'POST'])
+@login_required
+def add_user():
+    form = HumanLogStealForm()
+    # if form.validate_on_submit():
+    # flash('New user was added.')
+    return render_template("human_logs/steal.html", form=form,
+                           user=current_user)
+
+
+@app.route("/human_logs/steal_and_kill", methods=['GET', 'POST'])
+@login_required
+def add_user():
+    form = HumanLogStealAndKillForm()
+    # if form.validate_on_submit():
+    # flash('New user was added.')
+    return render_template("human_logs/steal_and_kill.html", form=form,
+                           user=current_user)
+
+
+@app.route("/human_logs/experiment", methods=['GET', 'POST'])
+@login_required
+def add_user():
+    form = HumanLogExperimentForm()
+    # if form.validate_on_submit():
+    # flash('New user was added.')
+    return render_template("human_logs/experiment.html", form=form,
+                           user=current_user)
