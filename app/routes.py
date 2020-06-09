@@ -69,9 +69,7 @@ def add_user():
     form = AdminActionAddUserForm()
 
     if form.validate_on_submit():
-        DB.add_user(username=form.username.data,
-                    pasword_hash=generate_password_hash(form.password.data),
-                    role=form.role.data)
+        DB.add_user(username=form.username.data, password_hash=generate_password_hash(form.password.data),role=form.role.data)
         flash('New user was added.')
     return render_template("admin_actions/add_user.html", form=form)
 
