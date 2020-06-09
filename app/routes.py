@@ -15,7 +15,8 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User(username=form.username.data)
-        print('user in login:', user.username, user.id, user.password_hash, user.role )
+        print('user in login:', user.username, user.id, user.password_hash,
+              user.role)
         if not user.if_exists() or not user.authenticate(form.password.data):
             flash('Invalid username or password')
             return redirect(url_for('login'))
@@ -59,14 +60,13 @@ def home():
     else:
         return render_template("home.html")
 
+
 @app.route("/alien")
 @login_required
 def alien():
-
     if current_user.role == "human":
         return render_template("human.html")
     return render_template("alien.html", user=current_user)
-
 
 
 @app.route("/human")
@@ -83,29 +83,32 @@ def add_user():
     form = AdminActionAddUserForm()
 
     if form.validate_on_submit():
-        DB.add_user(username=form.username.data, password_hash=generate_password_hash(form.password.data),role=form.role.data)
+        DB.add_user(username=form.username.data,
+                    password_hash=generate_password_hash(form.password.data),
+                    role=form.role.data)
         flash('New user was added.')
-    return render_template("admin_actions/add_user.html", form=form, user=current_user)
+    return render_template("admin_actions/add_user.html", form=form,
+                           user=current_user)
 
 
 @app.route("/admin_actions/add_ship", methods=['GET', 'POST'])
 @login_required
-
 def admin_actions_add_ship():
     form = AdminActionAddShipForm()
     # if form.validate_on_submit():
     # flash('New user was added.')
-    return render_template("admin_actions/add_ship.html", form=form, user=current_user)
+    return render_template("admin_actions/add_ship.html", form=form,
+                           user=current_user)
 
 
 @app.route("/admin_actions/destroy_ship", methods=['GET', 'POST'])
 @login_required
-
 def admin_actions_destroy_ship():
     form = AdminActionDestroyShipForm()
     # if form.validate_on_submit():
     # flash('New user was added.')
-    return render_template("admin_actions/destroy_ship.html", form=form, user=current_user)
+    return render_template("admin_actions/destroy_ship.html", form=form,
+                           user=current_user)
 
 
 @app.route("/admin_log/alien_steals", methods=['GET', 'POST'])
@@ -114,7 +117,8 @@ def admin_log_alien_steals():
     form = NAndTwoDatesForm()
     # if form.validate_on_submit():
     # flash('New user was added.')
-    return render_template("adm_logs/alien_steals.html", form=form, user=current_user)
+    return render_template("adm_logs/alien_steals.html", form=form,
+                           user=current_user)
 
 
 @app.route("/admin_log/excursions", methods=['GET', 'POST'])
@@ -123,7 +127,8 @@ def admin_log_excursions():
     form = AdminLogExcursionsForm()
     # if form.validate_on_submit():
     # flash('New user was added.')
-    return render_template("adm_logs/excursions.html", form=form, user=current_user)
+    return render_template("adm_logs/excursions.html", form=form,
+                           user=current_user)
 
 
 @app.route("/admin_log/human_steals", methods=['GET', 'POST'])
@@ -132,7 +137,8 @@ def admin_log_human_steals():
     form = NAndTwoDatesForm()
     # if form.validate_on_submit():
     # flash('New user was added.')
-    return render_template("adm_logs/human_steals.html", form=form, user=current_user)
+    return render_template("adm_logs/human_steals.html", form=form,
+                           user=current_user)
 
 
 @app.route("/admin_log/ships", methods=['GET', 'POST'])
@@ -150,7 +156,8 @@ def admin_log_total_steals():
     form = ShowButtonForm()
     # if form.validate_on_submit():
     # flash('New user was added.')
-    return render_template("adm_logs/total_steals.html", form=form, user=current_user)
+    return render_template("adm_logs/total_steals.html", form=form,
+                           user=current_user)
 
 
 @app.route("/human_actions/escape", methods=['GET', 'POST'])
@@ -159,7 +166,8 @@ def human_actions_escape():
     form = HumanActionEscapeForm()
     # if form.validate_on_submit():
     # flash('New user was added.')
-    return render_template("human_actions/escape.html", form=form, user=current_user)
+    return render_template("human_actions/escape.html", form=form,
+                           user=current_user)
 
 
 @app.route("/human_actions/kill", methods=['GET', 'POST'])
