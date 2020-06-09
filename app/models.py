@@ -175,6 +175,14 @@ class DB:
 
     @staticmethod
     def add_user(username, password_hash, role):
+        if role == 'human':
+            role_to_add = True
+        else:
+            role_to_add = False
+        command = """insert into  users values ((SELECT Max(id) + 1 from users), '{username}', '{username}', '{pasword_hash}', {role}, True, False, 1)""".format(
+            username=username, pasword_hash=password_hash, role=role_to_add)
+        response_id = DB.template_of_cursor(command)
+        print("add user responce:",response_id)
         print("add user", username, password_hash, role)
         pass
 
@@ -184,9 +192,11 @@ class DB:
         command = """INSERT INTO murder (id, human_id, alien_id, DATE) VALUES ((SELECT Max(id) + 1 from murder),{human_id}, {alien_id}, CURRENT_DATE);update users set alive = false where id = (SELECT user_id from alien where id = {alien_id});DELETE from alien_group where alien_group_id = (SELECT alien_group_id FROM starship where id = (SELECT place_id FROM users where id = (SELECT user_id from alien where id = {alien_id}))) and alien_id = {alien_id};""".format(human_id=human_id, alien_id=alien_id)
         try:
             DB.template_of_cursor(command)
-            return True
-        except Exception:
+        except Exception as excp:
+            print("human_kill_alien exeption:",excp)
             return False
+        return True
+
 
 
 @login.user_loader
@@ -199,9 +209,13 @@ class User(UserMixin):
         self.username = username
         _id = DB.get_id_by_username(self.username)
         self.id = _id
-        self.password_hash = DB.get_hash_by_username(username)
-        self.role = DB.get_role_by_id(self.id)
-
+        if _id is not None:
+            self.password_hash = DB.get_hash_by_username(username)
+            self.role = DB.get_role_by_id(self.id)
+        else:
+            self.password_hash = None
+            self.role = None
+             
     def if_exists(self):
         return self.password_hash
 
