@@ -3,7 +3,7 @@
 {% block body %}
 <div class="body-page-element">
     <h1 class="header-element">
-        Hello
+        Hello, {{ user.username }}
     </h1>
     <h2 class="header-element">
         Chose an action
@@ -12,8 +12,8 @@
         <div class="dropdown">
             <button class="dropbtn">Chose an action</button>
             <div class="dropdown-content">
-              <a href="#">Kill</a>
-              <a href="#">Escape</a>
+              <a href="{{ url_for("human_actions_kill") }}">Kill</a>
+              <a href="{{ url_for("human_actions_escape") }}">Escape</a>
             </div>
           </div>
     </div>
@@ -24,11 +24,11 @@
         <div class="dropdown">
             <button class="dropbtn">View logs</button>
             <div class="dropdown-content">
-                <a href="#">Ships</a> 
-                <a href="#">Steal</a>
-                <a href="#">Kill</a>
-                <a href="#">Steal and Kill</a>
-                <a href="#">Experiment</a>
+                <a href="{{ url_for("human_logs_ships") }}">Ships</a>
+                <a href="{{ url_for("human_logs_steal") }}">Steal</a>
+                <a href="{{ url_for("human_logs_kill") }}">Kill</a>
+                <a href="{{ url_for("human_logs_steal_and_kill") }}">Steal and Kill</a>
+                <a href="{{ url_for("human_logs_experiment") }}">Experiment</a>
             </div>
           </div>
     </div>

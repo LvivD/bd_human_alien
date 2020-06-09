@@ -1,38 +1,38 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<div class="body-page-element">
-    <h1 class="header-element">
-        Hello, admin
-    </h1>
-    <h1 class="header-element">
-        Chose an action
-    </h1>
-    <div class="main-element">
-        <div class="dropdown">
-            <button class="dropbtn">Chose an action</button>
-            <div class="dropdown-content">
-                <a href="#">Add user</a>
-                <a href="#">Destroy a ship</a>
-                <a href="#">Add a ship</a>
+    <div class="body-page-element">
+        <h1 class="header-element">
+            Hello, admin
+        </h1>
+        <h1 class="header-element">
+            Chose an action
+        </h1>
+        <div class="main-element">
+            <div class="dropdown">
+                <button class="dropbtn">Chose an action</button>
+                <div class="dropdown-content">
+                    <a href="{{ url_for("admin_actions_add_user") }}">Add user</a>
+                    <a href="{{ url_for("admin_actions_destroy_ship") }}">Destroy a ship</a>
+                    <a href="{{ url_for("admin_actions_add_ship") }}">Add a ship</a>
+                </div>
             </div>
-          </div>
-    </div>
-    <h2 class="header-element">
-        View logs
-    </h2>
-    <div class="main-element">
-        <div class="dropdown">
-            <button class="dropbtn">View logs</button>
-            <div class="dropdown-content">
-                <a href="#">Alien steals</a>
-                <a href="#">Human steals</a>
-                <a href="#">Excursions</a>
-                <a href="#">Total Steals</a>
-                <a href="#">All Ships</a>
+        </div>
+        <h2 class="header-element">
+            View logs
+        </h2>
+        <div class="main-element">
+            <div class="dropdown">
+                <button class="dropbtn">View logs</button>
+                <div class="dropdown-content">
+                    <a href="{{ url_for("admin_log_alien_steals") }}">Alien steals</a>
+                    <a href="{{ url_for("admin_log_human_steals") }}">Human steals</a>
+                    <a href="{{ url_for("admin_log_excursions") }}">Excursions</a>
+                    <a href="{{ url_for("admin_log_total_steals") }}">Total Steals</a>
+                    <a href="{{ url_for("admin_log_ships") }}">All Ships</a>
+                </div>
             </div>
-          </div>
+        </div>
     </div>
-</div>
 
 {% endblock %}

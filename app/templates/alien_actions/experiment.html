@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <div class="body-page-element">
+        <h1 class="header-element">
+            Hello, {{ user.username }}
+        </h1>
+        <h2 class="header-element">
+            Steal a human on the ship
+        </h2>
+        <div class="main-element">
+            <form action="" method="post" novalidate>
+                {{ form.hidden_tag() }}
+                <p>
+                    {{ form.human.label }}<br>
+                    {{ form.human(size=45) }}<br>
+                    {% for error in form.human.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+                <p>{{ form.submit() }}</p>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

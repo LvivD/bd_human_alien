@@ -2,15 +2,9 @@
 
 {% block body %}
 <div>
-    <p>Hello {{user.username}}!</p>
-    <p>We are glad to see you here.</p>
-    <p>Your class is: {{user.role}}</p>
-    <!-- <p>You are currently on {{user.planet}} planet.</p> -->
-    <!-- <p>There are other aliens on this ship:</p>
-    {% for alien in user.aliens_on_ship %}
-        <span>[{{ alien }}]</span>
-    {% endfor %} -->
-    <a href="{{ url_for(user.role) }}">Go to actions</a>
+
+    <img src="../static/images/we_want_to_believe_1_dark_green.png" alt="Oh no..."/>
+
 </div>
     
 {% endblock %}

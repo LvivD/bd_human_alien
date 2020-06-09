@@ -1,37 +1,36 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<div class="body-page-element">
-    <h1 class="header-element">
-        "Hello, <USERNAME>, <USERROLE>"
-    </h1>
-    <h1 class="header-element">
-        Chose an action
-    </h1>
-    <div class="main-element">
-        <div class="dropdown">
-            <button class="dropbtn">Chose an action</button>
-            <div class="dropdown-content">
-                <a href="#">Experiment</a>                  
-                <a href="#">Excursion</a>
-                <a href="#">Steal</a>
-                <a href="#">Transport</a>
+    <div class="body-page-element">
+        <h1 class="header-element">
+            "Hello, {{ user.username }}
+        </h1>
+        <h1 class="header-element">
+            Chose an action
+        </h1>
+        <div class="main-element">
+            <div class="dropdown">
+                <button class="dropbtn">Chose an action</button>
+                <div class="dropdown-content">
+                    <a href="{{ url_for("alien_actions_experiment") }}">Experiment</a>
+                    <a href="{{ url_for("alien_actions_excursion") }}">Excursion</a>
+                    <a href="{{ url_for("alien_actions_steal") }}">Steal</a>
+                    <a href="{{ url_for("alien_actions_transportation") }}">Transport</a>
+                </div>
             </div>
-          </div>
-    </div>
-    <h2 class="header-element">
-        View logs
-    </h2>
-    <div class="main-element">
-        <div class="dropdown">
-            <button class="dropbtn">View logs</button>
-            <div class="dropdown-content">
-                <a href="#">Steal</a>
-                <a href="#">Excurtion</a>
-                <a href="#">Experiments</a>
+        </div>
+        <h2 class="header-element">
+            View logs
+        </h2>
+        <div class="main-element">
+            <div class="dropdown">
+                <button class="dropbtn">View logs</button>
+                <div class="dropdown-content">
+                    <a href="{{ url_for("alien_logs_experiment") }}">Steal</a>
+                    <a href="{{ url_for("alien_logs_steal") }}">Excurtion</a>
+                </div>
             </div>
-          </div>
+        </div>
     </div>
-</div>
 
 {% endblock %}
