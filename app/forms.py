@@ -1,10 +1,10 @@
 from flask_wtf import FlaskForm
 from wtforms import (StringField, PasswordField, BooleanField, SubmitField,
-                     DateField, DecimalField, RadioField, )
+                     DateField, DecimalField, RadioField)
 from wtforms.validators import DataRequired
 
-
 from app.models import DB
+
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -48,13 +48,16 @@ class HumanActionKillForm(FlaskForm):
     #     self.aliens_list = [(alien, alien) for alien in self.aliens_list]
     #     self.alien = RadioField('Aliens', choices=self.aliens_list)
 
+
 class HumanActionEscapeForm(FlaskForm):
     submit = SubmitField('Do!')
 
 
 class AdminLogExcursionsForm(FlaskForm):
-    alien = RadioField()
-    human = RadioField()
+    # show all aliens
+    alien = StringField('Alien', validators=[DataRequired()])
+    # show all humans
+    human = StringField('Human', validators=[DataRequired()])
     date1 = DateField(validators=[DataRequired()])
     date2 = DateField(validators=[DataRequired()])
     submit = SubmitField('Show')
@@ -69,20 +72,25 @@ class AdminActionAddUserForm(FlaskForm):
 
 
 class AdminActionDestroyShipForm(FlaskForm):
-    ship = RadioField()
+    # show all ships
+    ship = StringField('Ship', validators=[DataRequired()])
     submit = SubmitField('Do!')
 
 
 class AdminActionAddShipForm(FlaskForm):
-    aliens_group = RadioField()
-    human_group = RadioField()
+    # show all alien groups
+    alien = StringField('Alien group', validators=[DataRequired()])
+    # show all human groups
+    human = StringField('Human group', validators=[DataRequired()])
+
     coordinate = DecimalField(validators=[DataRequired()])
     name = StringField("Star ship name", validators=[DataRequired()])
     submit = SubmitField('Create!')
 
 
 class AlienActionStealForm(FlaskForm):
-    human = RadioField()
+    # show all human groups
+    human = StringField('Human', validators=[DataRequired()])
     submit = SubmitField('Steal!')
 
 
@@ -91,22 +99,29 @@ class AlienActionExcursionForm(FlaskForm):
 
 
 class AlienActionExperimentForm(FlaskForm):
-    human = RadioField()
+    # show all human groups
+    human = StringField('Human', validators=[DataRequired()])
     submit = SubmitField('Do')
 
 
 class AlienActionTransportationForm(FlaskForm):
-    departure = RadioField()
-    destination = RadioField()
-    whom = RadioField()
+    # show all ships
+    departure = StringField('From ship', validators=[DataRequired()])
+    # show all ships
+    destination = StringField('To ship', validators=[DataRequired()])
+    # show all humans from ship
+    human = StringField('Human', validators=[DataRequired()])
+
     submit = SubmitField('Do')
 
 
 class AlienLogsExperimentForm(FlaskForm):
-    human = RadioField()
+    # show all humans from ship
+    human = StringField('Human', validators=[DataRequired()])
     submit = SubmitField('Do')
 
 
 class AlienLogsStealForm(FlaskForm):
-    human = RadioField()
+    # show all humans without ship
+    human = StringField('Human', validators=[DataRequired()])
     submit = SubmitField('Do')
