@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import (StringField, PasswordField, BooleanField, SubmitField,
-                     DateField, DecimalField, RadioField)
+                     DateField, DecimalField, RadioField, )
 from wtforms.validators import DataRequired
 
 
@@ -41,6 +41,15 @@ class HumanLogExperimentForm(FlaskForm):
     submit = SubmitField('Show')
 
 
+class HumanActionKillForm(FlaskForm):
+    alien = RadioField()
+    submit = SubmitField('Do!')
+
+
+class HumanActionEscapeForm(FlaskForm):
+    submit = SubmitField('Do!')
+
+
 class AdminLogAlienStealsForm(FlaskForm):
     n = DecimalField(validators=[DataRequired()])
     date1 = DateField(validators=[DataRequired()])
@@ -67,19 +76,15 @@ class AdminLogTotalStealsForm(FlaskForm):
     submit = SubmitField('Show')
 
 
-class HumanActionKillForm(FlaskForm):
-    alien = RadioField()
-    submit = SubmitField('Do!')
-
-
-class HumanActionEscapeForm(FlaskForm):
-    submit = SubmitField('Do!')
+class AdminLogTotalShipsForm(FlaskForm):
+    submit = SubmitField('Show')
 
 
 class AdminActionAddUserForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
-    role = RadioField('Role', choices=[('human','human'),('alien','alien')], validators=[DataRequired()])
+    role = RadioField('Role', choices=[('human', 'human'), ('alien', 'alien')],
+                      validators=[DataRequired()])
     submit = SubmitField('Add user')
 
 

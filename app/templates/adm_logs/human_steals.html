@@ -1,18 +1,40 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<div class="body-page-element">
-    <h1 class="header-element">
-        Hello, admin
-    </h1>
-    <h2 class="header-element">
-        Show all humans that were stolen at least N times from date1 to date2
-    </h2>
-    <div class="main-element">
-        <form action="" method="post" novalidate>
-
-        </form>
+    <div class="body-page-element">
+        <h1 class="header-element">
+            Hello, admin
+        </h1>
+        <h2 class="header-element">
+            Show all humans that were stolen at least N times from date1 to date2
+        </h2>
+        <div class="main-element">
+            <form action="" method="post" novalidate>
+                {{ form.hidden_tag() }}
+                <p>
+                    {{ form.n.label }}<br>
+                    {{ form.n(size=45) }}<br>
+                    {% for error in form.n.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.date1.label }}<br>
+                    {{ form.date1(size=45) }}<br>
+                    {% for error in form.date1.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.date2.label }}<br>
+                    {{ form.date2(size=45) }}<br>
+                    {% for error in form.date2.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+                <p>{{ form.submit() }}</p>
+            </form>
+        </div>
     </div>
-</div>
 
 {% endblock %}
