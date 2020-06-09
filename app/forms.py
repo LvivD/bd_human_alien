@@ -41,10 +41,17 @@ class HumanLogExperimentForm(FlaskForm):
     submit = SubmitField('Show')
 
 
-class AdminLogStealsForm(FlaskForm):
+class AdminLogAlienStealsForm(FlaskForm):
     n = DecimalField(validators=[DataRequired])
     date1 = DateField(validators=[DataRequired])
     date2 = DateField(validators=[DataRequired])
+    submit = SubmitField('Show')
+
+
+class AdminLogHumanStealsForm(FlaskForm):
+    n = DecimalField(validators=[DataRequired()])
+    date1 = DateField(validators=[DataRequired()])
+    date2 = DateField(validators=[DataRequired()])
     submit = SubmitField('Show')
 
 
