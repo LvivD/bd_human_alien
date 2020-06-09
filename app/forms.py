@@ -75,8 +75,23 @@ class AlienActionExcursionForm(FlaskForm):
     submit = SubmitField('Do')
 
 
+class AlienActionExperimentForm(FlaskForm):
+    human = RadioField()
+    submit = SubmitField('Do')
+
+
 class AlienActionTransportationForm(FlaskForm):
     departure = RadioField()
     destination = RadioField()
     whom = RadioField()
+    submit = SubmitField('Do')
+
+
+class AlienLogsExperimentForm(FlaskForm):
+    human = RadioField()
+    submit = SubmitField('Do')
+
+
+class AlienLogsStealForm(FlaskForm):
+    human = RadioField()
     submit = SubmitField('Do')

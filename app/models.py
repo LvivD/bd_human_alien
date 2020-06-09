@@ -27,8 +27,8 @@ class DB:
     def get_id_by_username(username):
         cursor = DB.conn.cursor()
         cursor.execute(
-            """SELECT id FROM test_table WHERE username = '{U}';""".format(
-                U=username))
+                """SELECT id FROM test_table WHERE username = '{U}';""".format(
+                        U=username))
         id = cursor.fetchall()
         try:
             id = id[0][0]
