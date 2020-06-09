@@ -1,18 +1,26 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<div class="body-page-element">
-    <h1 class="header-element">
-        Hello, admin
-    </h1>
-    <h2 class="header-element">
-        Destroy a ship
-    </h2>
-    <div class="main-element">
-        <form action="" method="post" novalidate>
-
-        </form>
+    <div class="body-page-element">
+        <h1 class="header-element">
+            Hello, admin
+        </h1>
+        <h2 class="header-element">
+            Destroy a ship
+        </h2>
+        <div class="main-element">
+            <form action="" method="post" novalidate>
+                {{ form.hidden_tag() }}
+                <p>
+                    {{ form.ship.label }}<br>
+                    {{ form.ship(size=45) }}<br>
+                    {% for error in form.ship.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+                <p>{{ form.submit() }}</p>
+            </form>
+        </div>
     </div>
-</div>
 
 {% endblock %}

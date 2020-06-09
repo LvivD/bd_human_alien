@@ -13,21 +13,21 @@
             {{ form.hidden_tag() }}
             <p>
                 {{ form.username.label }}<br>
-                {{ form.username(size=32) }}<br>
+                {{ form.username(size=45) }}<br>
                 {% for error in form.username.errors %}
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
             </p>
             <p>
                 {{ form.password.label }}<br>
-                {{ form.password(size=32) }}<br>
+                {{ form.password(size=45) }}<br>
                 {% for error in form.password.errors %}
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
             </p>
             <p>
                 {{ form.role.label }}<br>
-                {{ form.role(size=32) }}<br>
+                {{ form.role(size=45) }}<br>
                 {% for error in form.password.errors %}
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}

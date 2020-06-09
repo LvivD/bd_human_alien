@@ -84,5 +84,13 @@ class AdminActionAddUserForm(FlaskForm):
 
 
 class AdminActionDestroyShipForm(FlaskForm):
-    role = RadioField()
+    ship = RadioField()
     submit = SubmitField('Do!')
+
+
+class AdminActionAddShipForm(FlaskForm):
+    aliens_group = RadioField(validators=[DataRequired()])
+    human_group = RadioField(validators=[DataRequired()])
+    coordinate = DecimalField(validators=[DataRequired()])
+    name = StringField("Star ship name", validators=[DataRequired()])
+    submit = SubmitField('Create!')
