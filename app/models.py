@@ -27,7 +27,7 @@ class DB:
     def get_id_by_username(username):
         cursor = DB.conn.cursor()
         cursor.execute(
-                """SELECT id FROM test_table WHERE username = '{U}';""".format(
+                """SELECT id FROM users WHERE username = '{U}';""".format(
                         U=username))
         id = cursor.fetchall()
         try:
@@ -38,24 +38,40 @@ class DB:
         return str(id)
 
     @staticmethod
-    def get_username_by_id(id):
-        return id
-
-    @staticmethod
-    def get_info_by_id(id):
-        pass
-
-    @staticmethod
-    def if_user_exists(username):
-        return True
-
-    @staticmethod
     def get_hash_by_id(id):
-        return generate_password_hash(id)
+        cursor = DB.conn.cursor()
+        cursor.execute(
+                """SELECT password FROM users WHERE id = {U};""".format(
+                        U=id))
+        password_shash = cursor.fetchall()
+        try:
+            password_shash = password_shash[0][0]
+        except Exception:
+            password_shash = None
+        cursor.close()
+        return str(password_shash)
 
     @staticmethod
-    def get_user_info_by_id(id):
-        return 'human'
+    def get_user_role_by_id(id):
+        cursor = DB.conn.cursor()
+        cursor.execute(
+                """SELECT role FROM users WHERE id = {U};""".format(
+                        U=id))
+        role = cursor.fetchall()
+        try:
+            role = role[0][0]
+        except Exception:
+            role = None
+        cursor.close()
+
+        if role is None:
+            role = 'admin'
+        elif role:
+            role = 'human'
+        else: 
+            role = 'alien'
+
+        return role
 
     @staticmethod
     def add_user(username, pasword_hash, role):
@@ -73,19 +89,15 @@ class User(UserMixin):
         self.username = username
         self.id = DB.get_id_by_username(username)
         self.password_hash = False
-        self.role = None
+        self.role = DB.get_user_role_by_id(self.id)
+        self.planet = None
 
     def if_exists(self):
         return self.id
 
-    def upload_data(self):
-        self.role = DB.get_user_info_by_id(self.id)
-
     def authenticate(self, password):
         res = check_password_hash(
             self.password_hash or DB.get_hash_by_id(self.id), str(password))
-        if res:
-            self.upload_data()
         return res
 
     def get_id(self):

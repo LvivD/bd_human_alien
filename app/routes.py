@@ -10,7 +10,7 @@ from werkzeug.security import generate_password_hash
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('index'))
 
     form = LoginForm()
     if form.validate_on_submit():
@@ -37,8 +37,13 @@ def logout():
 
 
 @app.route("/")
+@login_required
 def index():
-    return redirect("/home")
+    print("from index:", current_user.is_authenticated)
+    if current_user.is_authenticated:
+        print(current_user.id, current_user.username,
+              current_user.password_hash, current_user.role)
+    return redirect(url_for(current_user.role))
 
 
 @app.route("/home")
@@ -47,19 +52,25 @@ def home():
     print("from home:", current_user.is_authenticated)
     if current_user.is_authenticated:
         print(current_user.id, current_user.username,
-              current_user.password_hash)
-    return render_template("home.html")
-
+              current_user.password_hash, current_user.role)
+    if current_user.is_authenticated:
+        return render_template("home.html", user=current_user)
+    else:
+        return render_template("home.html")
 
 @app.route("/alien")
 @login_required
 def alien():
+    if current_user.role == "human":
+        return render_template("human.html")
     return render_template("alien.html")
 
 
 @app.route("/human")
 @login_required
 def human():
+    if current_user.role == "alien":
+        return render_template("alien.html")
     return render_template("human.html")
 
 
@@ -78,7 +89,7 @@ def add_user():
 
 @app.route("/admin_actions/add_ship", methods=['GET', 'POST'])
 @login_required
-def add_user():
+def add_ship():
     form = AdminActionAddShipForm()
 
     # if form.validate_on_submit():
@@ -89,7 +100,7 @@ def add_user():
 
 @app.route("/admin_actions/destroy_ship", methods=['GET', 'POST'])
 @login_required
-def add_user():
+def destroy_ship():
     form = AdminActionDestroyShipForm()
 
     # if form.validate_on_submit():
