@@ -57,6 +57,11 @@ class DB:
     def get_user_info_by_id(id):
         return 'human'
 
+    @staticmethod
+    def add_user(username, pasword_hash, role):
+        print("add user", username, pasword_hash, role)
+        pass
+
 @login.user_loader
 def load_user(username):
     return User.get_user(username=username)

@@ -1,10 +1,10 @@
 from app import app
 from flask import render_template, flash, request, redirect, url_for
-from app.forms import LoginForm
+from app.forms import LoginForm, AdminActionAddUserForm
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User, DB         # DB delete
+from app.models import User, DB
 from werkzeug.urls import url_parse
-from werkzeug.security import generate_password_hash, check_password_hash # delete
+from werkzeug.security import generate_password_hash
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -54,3 +54,14 @@ def alien():
 @login_required
 def human():
     return render_template("human.html")
+
+
+@app.route("/admin_actions/add_user", methods=['GET', 'POST'])
+@login_required
+def add_user():
+    form = AdminActionAddUserForm()
+
+    if form.validate_on_submit():
+        DB.add_user(username=form.username.data, pasword_hash=generate_password_hash(form.password.data), role=form.role.data)
+        flash('New user was added.')
+    return render_template("admin_actions/add_user.html", form=form)
