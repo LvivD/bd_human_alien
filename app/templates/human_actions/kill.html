@@ -21,7 +21,7 @@
                     {{ form.alien.label }}<br>
                     {{ form.alien(size=32) }}<br>
                     {% for error in form.alien.errors %}
-                    <span style="color: red;">[{{ error }}]</span>
+                        <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
                 </p>
                 <p>{{ form.submit() }}</p>

@@ -45,9 +45,8 @@ def index():
     if current_user.is_authenticated:
         print(current_user.id, current_user.username,
               current_user.password_hash, current_user.role)
-    
-    return redirect(url_for(current_user.role))
 
+    return redirect(url_for(current_user.role))
 
 
 @app.route("/home")
@@ -77,6 +76,7 @@ def human():
     if current_user.role == "alien":
         return render_template("alien.html")
     return render_template("human.html", user=current_user)
+
 
 @app.route("/admin")
 @login_required
@@ -188,21 +188,20 @@ def human_actions_kill():
 
     if form.validate_on_submit():
         if form.alien.data in list(aliens_on_ship.keys()):
-            res = DB.human_kill_alien(current_user.id, aliens_on_ship[form.alien.data])
-        
-            if res: 
+            res = DB.human_kill_alien(current_user.id,
+                                      aliens_on_ship[form.alien.data])
+
+            if res:
                 flash('Alien was killed')
                 return redirect(url_for("index"))
-            flash("Something wrong. Alien wasn't killed")  
+            flash("Something wrong. Alien wasn't killed")
 
         else:
-            flash("Wrong alien name. Alien wasn't killed")  
-        
-         
-        
+            flash("Wrong alien name. Alien wasn't killed")
 
     return render_template("human_actions/kill.html", form=form,
-                           user=current_user, aliens_on_ship=list(aliens_on_ship.keys()))
+                           user=current_user,
+                           aliens_on_ship=list(aliens_on_ship.keys()))
 
 
 @app.route("/human_logs/kill", methods=['GET', 'POST'])
@@ -210,7 +209,7 @@ def human_actions_kill():
 def human_logs_kill():
     form = TwoDatesForm()
     if form.validate_on_submit():
-        
+
         flash('New user was added.')
     return render_template("human_logs/kill.html", form=form,
                            user=current_user)

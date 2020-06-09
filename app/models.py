@@ -118,7 +118,7 @@ class DB:
             role = 'admin'
         elif role is True:
             role = 'human'
-        elif role is False: 
+        elif role is False:
             role = 'alien'
         else:
             role = None
@@ -132,7 +132,7 @@ class DB:
                 """SELECT username FROM users WHERE role = False;""")
         aliens_list = cursor.fetchall()
         cursor.close()
-        
+
         for i in range(len(aliens_list)):
             try:
                 aliens_list[i] = aliens_list[i][0]
@@ -140,6 +140,22 @@ class DB:
                 aliens_list[i] = []
         print(aliens_list)
         return aliens_list
+
+    @staticmethod
+    def get_all_humans():
+        cursor = DB.conn.cursor()
+        cursor.execute(
+                """SELECT username FROM users WHERE role = True;""")
+        humans_list = cursor.fetchall()
+        cursor.close()
+
+        for i in range(len(humans_list)):
+            try:
+                humans_list[i] = humans_list[i][0]
+            except Exception:
+                humans_list[i] = []
+        print(humans_list)
+        return humans_list
 
     # @staticmethod
     # def get_all_aliens_on_the_ship(human_id):
@@ -160,13 +176,13 @@ class DB:
     def get_all_aliens_on_the_ship(human_id):
         print("get_all_aliens_on_the_ship id:", human_id)
         command = """SELECT alien_id from alien_group where alien_group_id = (select alien_group_id from starship where id = (select place_id from users where id = (SELECT user_id from human where id = {human_id})))""".format(
-            human_id=human_id)
+                human_id=human_id)
         response_id = DB.template_of_cursor(command)
         response = {}
         for alien in response_id:
             id = alien[0]
             command = """SELECT username FROM users where id=(select user_id from alien where id={id});""".format(
-                id=id)
+                    id=id)
             name = DB.template_of_cursor(command)
             name = name[0][0]
             response[name] = id
@@ -181,7 +197,8 @@ class DB:
     # людина вбиває прибульця (НАЧИНКА ФУНКЦІЇ)
     @staticmethod
     def human_kill_alien(human_id, alien_id):
-        command = """INSERT INTO murder (id, human_id, alien_id, DATE) VALUES ((SELECT Max(id) + 1 from murder),{human_id}, {alien_id}, CURRENT_DATE);update users set alive = false where id = (SELECT user_id from alien where id = {alien_id});DELETE from alien_group where alien_group_id = (SELECT alien_group_id FROM starship where id = (SELECT place_id FROM users where id = (SELECT user_id from alien where id = {alien_id}))) and alien_id = {alien_id};""".format(human_id=human_id, alien_id=alien_id)
+        command = """INSERT INTO murder (id, human_id, alien_id, DATE) VALUES ((SELECT Max(id) + 1 from murder),{human_id}, {alien_id}, CURRENT_DATE);update users set alive = false where id = (SELECT user_id from alien where id = {alien_id});DELETE from alien_group where alien_group_id = (SELECT alien_group_id FROM starship where id = (SELECT place_id FROM users where id = (SELECT user_id from alien where id = {alien_id}))) and alien_id = {alien_id};""".format(
+                human_id=human_id, alien_id=alien_id)
         try:
             DB.template_of_cursor(command)
             return True
