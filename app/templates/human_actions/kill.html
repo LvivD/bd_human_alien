@@ -11,11 +11,17 @@
         <div class="main-element">
             <form action="" method="post" novalidate>
                 {{ form.hidden_tag() }}
+                <p>Aliens on ship:</p>
+                <p>
+                    {% for alien in aliens_on_ship %}
+                        <span>{{ alien }};</span>
+                    {% endfor %}
+                </p>
                 <p>
                     {{ form.alien.label }}<br>
-                    {{ form.alien(size=45) }}<br>
+                    {{ form.alien(size=32) }}<br>
                     {% for error in form.alien.errors %}
-                        <span style="color: red;">[{{ error }}]</span>
+                    <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
                 </p>
                 <p>{{ form.submit() }}</p>

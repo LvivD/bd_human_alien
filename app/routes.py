@@ -184,18 +184,34 @@ def human_actions_escape():
 @login_required
 def human_actions_kill():
     form = HumanActionKillForm()
-    # if form.validate_on_submit():
-    # flash('New user was added.')
+    aliens_on_ship = DB.get_all_aliens_on_the_ship(current_user.id)
+
+    if form.validate_on_submit():
+        if form.alien.data in list(aliens_on_ship.keys()):
+            res = DB.human_kill_alien(current_user.id, aliens_on_ship[form.alien.data])
+        
+            if res: 
+                flash('Alien was killed')
+                return redirect(url_for("index"))
+            flash("Something wrong. Alien wasn't killed")  
+
+        else:
+            flash("Wrong alien name. Alien wasn't killed")  
+        
+         
+        
+
     return render_template("human_actions/kill.html", form=form,
-                           user=current_user)
+                           user=current_user, aliens_on_ship=list(aliens_on_ship.keys()))
 
 
 @app.route("/human_logs/kill", methods=['GET', 'POST'])
 @login_required
 def human_logs_kill():
     form = TwoDatesForm()
-    # if form.validate_on_submit():
-    # flash('New user was added.')
+    if form.validate_on_submit():
+        
+        flash('New user was added.')
     return render_template("human_logs/kill.html", form=form,
                            user=current_user)
 

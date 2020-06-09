@@ -24,6 +24,15 @@ class DB:
             DB.conn.close()
 
     @staticmethod
+    def template_of_cursor(command):
+        cursor = DB.conn.cursor()
+        cursor.execute(command)
+        DB.conn.commit()
+        response = cursor.fetchall()
+        cursor.close()
+        return response
+
+    @staticmethod
     def get_id_by_username(username):
         print("get_id_by_username", username)
         cursor = DB.conn.cursor()
@@ -132,10 +141,52 @@ class DB:
         print(aliens_list)
         return aliens_list
 
+    # @staticmethod
+    # def get_all_aliens_on_the_ship(human_id):
+    #     print("get_all_aliens_on_the_ship id:", human_id)
+    #     command = """select username form (SELECT alien_id from alien_group where alien_group_id = (select alien_group_id from starship where id = (select place_id from users where id = (SELECT user_id from human where id = {human_id}))) as id_alien join users on id_alien.id = users.idselect username form (SELECT alien_id from alien_group where alien_group_id = (select alien_group_id from starship where id = (select place_id from users where id = (SELECT user_id from human where id = {human_id}))) as id_alien join users on id_alien.id = users.id""".format(human_id=human_id)
+    #     aliens_list = DB.template_of_cursor(command)
+    #     if len(aliens_list) == 0:
+    #         return []
+    #     for i in range(len(aliens_list)):
+    #         try:
+    #             aliens_list[i] = aliens_list[i][0]
+    #         except Exception:
+    #             aliens_list[i] = []
+    #     print(aliens_list)
+    #     return aliens_list
+
+    @staticmethod
+    def get_all_aliens_on_the_ship(human_id):
+        print("get_all_aliens_on_the_ship id:", human_id)
+        command = """SELECT alien_id from alien_group where alien_group_id = (select alien_group_id from starship where id = (select place_id from users where id = (SELECT user_id from human where id = {human_id})))""".format(
+            human_id=human_id)
+        response_id = DB.template_of_cursor(command)
+        response = {}
+        for alien in response_id:
+            id = alien[0]
+            command = """SELECT username FROM users where id=(select user_id from alien where id={id});""".format(
+                id=id)
+            name = DB.template_of_cursor(command)
+            name = name[0][0]
+            response[name] = id
+        print(response)
+        return response
+
     @staticmethod
     def add_user(username, password_hash, role):
         print("add user", username, password_hash, role)
         pass
+
+    # людина вбиває прибульця (НАЧИНКА ФУНКЦІЇ)
+    @staticmethod
+    def human_kill_alien(human_id, alien_id):
+        command = """INSERT INTO murder (id, human_id, alien_id, DATE) VALUES ((SELECT Max(id) + 1 from murder),{human_id}, {alien_id}, CURRENT_DATE);update users set alive = false where id = (SELECT user_id from alien where id = {alien_id});DELETE from alien_group where alien_group_id = (SELECT alien_group_id FROM starship where id = (SELECT place_id FROM users where id = (SELECT user_id from alien where id = {alien_id}))) and alien_id = {alien_id};""".format(human_id=human_id, alien_id=alien_id)
+        try:
+            DB.template_of_cursor(command)
+            return True
+        except Exception:
+            return False
 
 
 @login.user_loader
