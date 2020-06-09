@@ -56,6 +56,10 @@ class AdminLogExcursionsForm(FlaskForm):
     submit = SubmitField('Show')
 
 
+class AdminLogTotalStealsForm(FlaskForm):
+    submit = SubmitField('Show')
+
+
 class HumanActionKillForm(FlaskForm):
     alien = RadioField()
     submit = SubmitField('Do!')
