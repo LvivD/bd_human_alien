@@ -15,6 +15,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User(username=form.username.data)
+        print('user in login:', user.username, user.id, user.password_hash, user.role )
         if not user.if_exists() or not user.authenticate(form.password.data):
             flash('Invalid username or password')
             return redirect(url_for('login'))
