@@ -35,8 +35,7 @@ class DB:
         try:
             id = id[0][0]
         except Exception:
-            raise RuntimeError('my error')
-            id = False
+            id = None
         cursor.close()
         if id:
             return str(id)
@@ -78,10 +77,6 @@ class DB:
             return str(password_hash)
         return password_hash
 
-    # @staticmethod
-    # def get_id_by_username(username):
-    #     return 69
-
     @staticmethod
     def get_hash_by_id(id):
         cursor = DB.conn.cursor()
@@ -97,39 +92,43 @@ class DB:
         cursor.close()
         return str(password_shash)
 
-    # @staticmethod
-    # def get_hash_by_id(id):
-    #     return generate_password_hash(str(id))
-
-    # @staticmethod
-    # def get_role_by_id(id):
-    #     cursor = DB.conn.cursor()
-    #     cursor.execute(
-    #             """SELECT role FROM users WHERE id = {U};""".format(
-    #                     U=id))
-    #     role = cursor.fetchall()
-    #     try:
-    #         role = role[0][0]
-    #     except Exception:
-    #         role = None
-    #     cursor.close()
-
-    #     if role is None:
-    #         role = 'admin'
-    #     elif role:
-    #         role = 'human'
-    #     else: 
-    #         role = 'alien'
-
-    #     return role
-
     @staticmethod
     def get_role_by_id(id):
-        return 'human'
+        cursor = DB.conn.cursor()
+        cursor.execute(
+                """SELECT role FROM users WHERE id = {U};""".format(
+                        U=id))
+        role = cursor.fetchall()
+        try:
+            role = role[0][0]
+        except Exception:
+            role = None
+        cursor.close()
+
+        if role is None:
+            role = 'admin'
+        elif role is True:
+            role = 'human'
+        elif role is False: 
+            role = 'alien'
+        else:
+            role = None
+
+        return role
     
     @staticmethod
     def get_planet_by_id(id):
-        return 'Earth'
+        cursor = DB.conn.cursor()
+        cursor.execute(
+                """SELECT planet FROM users WHERE id = {U};""".format(
+                        U=id))
+        planet = cursor.fetchall()
+        try:
+            planet = planet[0][0]
+        except Exception:
+            planet = None
+        cursor.close()
+        return planet
 
     @staticmethod
     def add_user(username, password_hash, role):
@@ -149,6 +148,7 @@ class User(UserMixin):
         self.id = _id
         self.password_hash = DB.get_hash_by_username(username)
         self.role = DB.get_role_by_id(self.id)
+        self.planet = DB.get_planet_by_id(self.id)
 
     def if_exists(self):
         return self.password_hash

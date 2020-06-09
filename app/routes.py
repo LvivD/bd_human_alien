@@ -44,7 +44,10 @@ def index():
     if current_user.is_authenticated:
         print(current_user.id, current_user.username,
               current_user.password_hash, current_user.role)
-    return redirect(url_for(current_user.role))
+    if current_user.role != 'admin':
+        return redirect(url_for(current_user.role))
+    else:
+        return redirect(url_for("human"))
 
 
 @app.route("/home")
