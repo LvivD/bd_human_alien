@@ -45,10 +45,9 @@ def index():
     if current_user.is_authenticated:
         print(current_user.id, current_user.username,
               current_user.password_hash, current_user.role)
-    if current_user.role != 'admin':
-        return redirect(url_for(current_user.role))
-    else:
-        return redirect(url_for("human"))
+    
+    return redirect(url_for(current_user.role))
+
 
 
 @app.route("/home")
@@ -78,6 +77,14 @@ def human():
     if current_user.role == "alien":
         return render_template("alien.html")
     return render_template("human.html", user=current_user)
+
+@app.route("/admin")
+@login_required
+def admin():
+    print('admin page, curr user role:', current_user.role)
+    if current_user.role != "admin":
+        return redirect(url_for(current_user.role))
+    return render_template("admin.html", user=current_user)
 
 
 @app.route("/admin_actions/add_user", methods=['GET', 'POST'])

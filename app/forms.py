@@ -4,11 +4,14 @@ from wtforms import (StringField, PasswordField, BooleanField, SubmitField,
 from wtforms.validators import DataRequired
 
 
+from app.models import DB
+
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
+
 
 
 class NAndTwoDatesForm(FlaskForm):
@@ -29,7 +32,9 @@ class ShowButtonForm(FlaskForm):
 
 
 class HumanActionKillForm(FlaskForm):
-    alien = RadioField()
+    aliens_list = DB.get_all_aliens()
+    aliens_list = [(alien, alien) for alien in aliens_list]
+    alien = RadioField('Aliens', choices=aliens_list)
     submit = SubmitField('Do!')
 
 

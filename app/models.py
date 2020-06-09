@@ -115,20 +115,22 @@ class DB:
             role = None
 
         return role
-    
+
     @staticmethod
-    def get_planet_by_id(id):
+    def get_all_aliens():
         cursor = DB.conn.cursor()
         cursor.execute(
-                """SELECT planet FROM users WHERE id = {U};""".format(
-                        U=id))
-        planet = cursor.fetchall()
-        try:
-            planet = planet[0][0]
-        except Exception:
-            planet = None
+                """SELECT username FROM users WHERE role = False;""")
+        aliens_list = cursor.fetchall()
         cursor.close()
-        return planet
+        
+        for i in range(len(aliens_list)):
+            try:
+                aliens_list[i] = aliens_list[i][0]
+            except Exception:
+                aliens_list[i] = []
+        print(aliens_list)
+        return aliens_list
 
     @staticmethod
     def add_user(username, password_hash, role):
@@ -148,7 +150,6 @@ class User(UserMixin):
         self.id = _id
         self.password_hash = DB.get_hash_by_username(username)
         self.role = DB.get_role_by_id(self.id)
-        self.planet = DB.get_planet_by_id(self.id)
 
     def if_exists(self):
         return self.password_hash
