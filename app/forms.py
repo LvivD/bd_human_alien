@@ -11,33 +11,20 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Sign In')
 
 
-class HumanLogStealForm(FlaskForm):
+class NAndTwoDatesForm(FlaskForm):
     n = DecimalField(validators=[DataRequired()])
     date1 = DateField(validators=[DataRequired()])
     date2 = DateField(validators=[DataRequired()])
     submit = SubmitField('Show')
 
 
-class HumanLogKillForm(FlaskForm):
+class TwoDatesForm(FlaskForm):
     date1 = DateField(validators=[DataRequired()])
     date2 = DateField(validators=[DataRequired()])
     submit = SubmitField('Show')
 
 
-class HumanLogShipsForm(FlaskForm):
-    date1 = DateField(validators=[DataRequired()])
-    date2 = DateField(validators=[DataRequired()])
-    submit = SubmitField('Show')
-
-
-class HumanLogStealAndKillForm(FlaskForm):
-    submit = SubmitField('Show')
-
-
-class HumanLogExperimentForm(FlaskForm):
-    n = DecimalField(validators=[DataRequired()])
-    date1 = DateField(validators=[DataRequired()])
-    date2 = DateField(validators=[DataRequired()])
+class ShowButtonForm(FlaskForm):
     submit = SubmitField('Show')
 
 
@@ -50,33 +37,11 @@ class HumanActionEscapeForm(FlaskForm):
     submit = SubmitField('Do!')
 
 
-class AdminLogAlienStealsForm(FlaskForm):
-    n = DecimalField(validators=[DataRequired()])
-    date1 = DateField(validators=[DataRequired()])
-    date2 = DateField(validators=[DataRequired()])
-    submit = SubmitField('Show')
-
-
-class AdminLogHumanStealsForm(FlaskForm):
-    n = DecimalField(validators=[DataRequired()])
-    date1 = DateField(validators=[DataRequired()])
-    date2 = DateField(validators=[DataRequired()])
-    submit = SubmitField('Show')
-
-
 class AdminLogExcursionsForm(FlaskForm):
     alien = RadioField()
     human = RadioField()
     date1 = DateField(validators=[DataRequired()])
     date2 = DateField(validators=[DataRequired()])
-    submit = SubmitField('Show')
-
-
-class AdminLogTotalStealsForm(FlaskForm):
-    submit = SubmitField('Show')
-
-
-class AdminLogTotalShipsForm(FlaskForm):
     submit = SubmitField('Show')
 
 
@@ -94,8 +59,24 @@ class AdminActionDestroyShipForm(FlaskForm):
 
 
 class AdminActionAddShipForm(FlaskForm):
-    aliens_group = RadioField(validators=[DataRequired()])
-    human_group = RadioField(validators=[DataRequired()])
+    aliens_group = RadioField()
+    human_group = RadioField()
     coordinate = DecimalField(validators=[DataRequired()])
     name = StringField("Star ship name", validators=[DataRequired()])
     submit = SubmitField('Create!')
+
+
+class AlienActionStealForm(FlaskForm):
+    human = RadioField()
+    submit = SubmitField('Steal!')
+
+
+class AlienActionExcursionForm(FlaskForm):
+    submit = SubmitField('Do')
+
+
+class AlienActionTransportationForm(FlaskForm):
+    departure = RadioField()
+    destination = RadioField()
+    whom = RadioField()
+    submit = SubmitField('Do')

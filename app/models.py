@@ -27,8 +27,8 @@ class DB:
     def get_id_by_username(username):
         cursor = DB.conn.cursor()
         cursor.execute(
-                """SELECT id FROM test_table WHERE username = '{U}';""".format(
-                        U=username))
+            """SELECT id FROM test_table WHERE username = '{U}';""".format(
+                U=username))
         id = cursor.fetchall()
         try:
             id = id[0][0]
@@ -58,8 +58,8 @@ class DB:
         return 'human'
 
     @staticmethod
-    def add_user(username, pasword_hash, role):
-        print("add user", username, pasword_hash, role)
+    def add_user(username, password_hash, role):
+        print("add user", username, password_hash, role)
         pass
 
 
@@ -83,7 +83,8 @@ class User(UserMixin):
 
     def authenticate(self, password):
         res = check_password_hash(
-            self.password_hash or DB.get_hash_by_id(self.id), str(password))
+                self.password_hash or DB.get_hash_by_id(self.id),
+                str(password))
         if res:
             self.upload_data()
         return res
