@@ -1,18 +1,47 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<div class="body-page-element">
-    <h1 class="header-element">
-        Hello, admin
-    </h1>
-    <h2 class="header-element">
-        Show all excursions of alien and human from date1 to date2
-    </h2>
-    <div class="main-element">
-        <form action="" method="post" novalidate>
-            {{ }}
-        </form>
+    <div class="body-page-element">
+        <h1 class="header-element">
+            Hello, admin
+        </h1>
+        <h2 class="header-element">
+            Show all excursions of alien and human from date1 to date2
+        </h2>
+        <div class="main-element">
+            <form action="" method="post" novalidate>
+                {{ form.hidden_tag() }}
+                <p>
+                    {{ form.alien.label }}<br>
+                    {{ form.alien(size=45) }}<br>
+                    {% for error in form.alien.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.human.label }}<br>
+                    {{ form.human(size=45) }}<br>
+                    {% for error in form.human.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.date1.label }}<br>
+                    {{ form.date1(size=45) }}<br>
+                    {% for error in form.date1.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.date2.label }}<br>
+                    {{ form.date2(size=45) }}<br>
+                    {% for error in form.date2.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+                <p>{{ form.submit() }}</p>
+            </form>
+        </div>
     </div>
-</div>
 
 {% endblock %}

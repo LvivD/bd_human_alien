@@ -1,18 +1,19 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<div class="body-page-element">
-    <h1 class="header-element">
-        Hello, <USERNAME>, <USERROLE>
-    </h1>
-    <h2 class="header-element">
-        Escape from ship!
-    </h2>
-    <div class="main-element">
-        <form action="" method="post" novalidate>
-
-    </form>
+    <div class="body-page-element">
+        <h1 class="header-element">
+            Hello, {{ user.username }}
+        </h1>
+        <h2 class="header-element">
+            Escape from ship!
+        </h2>
+        <div class="main-element">
+            <form action="" method="post" novalidate>
+                {{ form.hidden_tag() }}
+                <p>{{ form.submit() }}</p>
+            </form>
+        </div>
     </div>
-</div>
 
 {% endblock %}

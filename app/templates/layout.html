@@ -1,39 +1,33 @@
 <!DOCTYPE html>
 
 <html>
-    <head>
-        <meta name="viewport" content="initial-scale=1, width=device-width"/>
-        <title>I WANT TO BELIEVE</title>
-        <link href="https://fonts.googleapis.com/css2?family=Philosopher&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
-    </head>
-    <body>
-        <div class="body-page-element">
-            <header>
-                <h1 class='header-element'>
-                I want to believe
-                <!-- <img src="../static/images/we_want_to_believe_1_dark_green.png" class='header-img'></img> -->
-            </header>
-    
-            <div class="main-element">
-                
-                {% with messages = get_flashed_messages() %}
-                {% if messages %}
+<head>
+    <meta name="viewport" content="initial-scale=1, width=device-width"/>
+    <title>I WANT TO BELIEVE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Philosopher&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+<div class="body-page-element">
+    <header><h1 class='header-element'> I want to believe </h1><a href="logout"></a></header>
+    <div class="main-element">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
                 <ul>
                     {% for message in messages %}
-                    <li>{{ message }}</li>
+                        <li>{{ message }}</li>
                     {% endfor %}
                 </ul>
                 <hr>
-                {% endif %}
-                {% endwith %}
-                
-    
-                {% block body %}
-                
-                {% endblock %}
-            </div>
-            
-        </div>
-    </body>
+            {% endif %}
+        {% endwith %}
+
+
+        {% block body %}
+
+        {% endblock %}
+    </div>
+
+</div>
+</body>
 </html>

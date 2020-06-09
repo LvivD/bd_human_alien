@@ -6,18 +6,11 @@
             Hello, {{ user.username }}
         </h1>
         <h2 class="header-element">
-            Chose an alien on your ship to kill!
+            Make an excursion
         </h2>
         <div class="main-element">
             <form action="" method="post" novalidate>
                 {{ form.hidden_tag() }}
-                <p>
-                    {{ form.alien.label }}<br>
-                    {{ form.alien(size=45) }}<br>
-                    {% for error in form.alien.errors %}
-                        <span style="color: red;">[{{ error }}]</span>
-                    {% endfor %}
-                </p>
                 <p>{{ form.submit() }}</p>
             </form>
         </div>

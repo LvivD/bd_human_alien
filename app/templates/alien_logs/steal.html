@@ -3,10 +3,10 @@
 {% block body %}
     <div class="body-page-element">
         <h1 class="header-element">
-            Hello, admin
+            Hello, {{ user.username }}
         </h1>
         <h2 class="header-element">
-            Show all humans that were stolen at least N times from date1 to date2
+            Show all humans that were stolen by you at least N times from date1 to date2
         </h2>
         <div class="main-element">
             <form action="" method="post" novalidate>

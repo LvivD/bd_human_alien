@@ -3,32 +3,32 @@
 {% block body %}
     <div class="body-page-element">
         <h1 class="header-element">
-            Hello, admin
+            Hello, {{ user.username }}
         </h1>
         <h2 class="header-element">
-            Show all humans that were stolen at least N times from date1 to date2
+            Transport a human from one ship to another
         </h2>
         <div class="main-element">
             <form action="" method="post" novalidate>
                 {{ form.hidden_tag() }}
                 <p>
-                    {{ form.n.label }}<br>
-                    {{ form.n(size=45) }}<br>
-                    {% for error in form.n.errors %}
+                    {{ form.departure.label }}<br>
+                    {{ form.departure(size=45) }}<br>
+                    {% for error in form.departure.errors %}
                         <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
                 </p>
                 <p>
-                    {{ form.date1.label }}<br>
-                    {{ form.date1(size=45) }}<br>
-                    {% for error in form.date1.errors %}
+                    {{ form.destination.label }}<br>
+                    {{ form.destination(size=45) }}<br>
+                    {% for error in form.destination.errors %}
                         <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
                 </p>
                 <p>
-                    {{ form.date2.label }}<br>
-                    {{ form.date2(size=45) }}<br>
-                    {% for error in form.date2.errors %}
+                    {{ form.whom.label }}<br>
+                    {{ form.whom(size=45) }}<br>
+                    {% for error in form.whom.errors %}
                         <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
                 </p>

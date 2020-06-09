@@ -80,30 +80,170 @@ def add_user():
     form = AdminActionAddUserForm()
 
     if form.validate_on_submit():
-        DB.add_user(username=form.username.data,
-                    pasword_hash=generate_password_hash(form.password.data),
-                    role=form.role.data)
+        DB.add_user(username=form.username.data, password_hash=generate_password_hash(form.password.data),role=form.role.data)
         flash('New user was added.')
     return render_template("admin_actions/add_user.html", form=form)
 
 
 @app.route("/admin_actions/add_ship", methods=['GET', 'POST'])
 @login_required
-def add_ship():
+
+def admin_actions_add_ship():
     form = AdminActionAddShipForm()
-
     # if form.validate_on_submit():
-
     # flash('New user was added.')
     return render_template("admin_actions/add_ship.html", form=form)
 
 
 @app.route("/admin_actions/destroy_ship", methods=['GET', 'POST'])
 @login_required
-def destroy_ship():
+
+def admin_actions_destroy_ship():
     form = AdminActionDestroyShipForm()
-
     # if form.validate_on_submit():
-
     # flash('New user was added.')
     return render_template("admin_actions/destroy_ship.html", form=form)
+
+
+@app.route("/admin_log/alien_steals", methods=['GET', 'POST'])
+@login_required
+def admin_log_alien_steals():
+    form = NAndTwoDatesForm()
+    # if form.validate_on_submit():
+    # flash('New user was added.')
+    return render_template("adm_logs/alien_steals.html", form=form)
+
+
+@app.route("/admin_log/excursions", methods=['GET', 'POST'])
+@login_required
+def admin_log_excursions():
+    form = AdminLogExcursionsForm()
+    # if form.validate_on_submit():
+    # flash('New user was added.')
+    return render_template("adm_logs/excursions.html", form=form)
+
+
+@app.route("/admin_log/human_steals", methods=['GET', 'POST'])
+@login_required
+def admin_log_human_steals():
+    form = NAndTwoDatesForm()
+    # if form.validate_on_submit():
+    # flash('New user was added.')
+    return render_template("adm_logs/human_steals.html", form=form)
+
+
+@app.route("/admin_log/ships", methods=['GET', 'POST'])
+@login_required
+def admin_log_ships():
+    form = ShowButtonForm()
+    # if form.validate_on_submit():
+    # flash('New user was added.')
+    return render_template("adm_logs/ships.html", form=form)
+
+
+@app.route("/admin_log/total_steals", methods=['GET', 'POST'])
+@login_required
+def admin_log_total_steals():
+    form = ShowButtonForm()
+    # if form.validate_on_submit():
+    # flash('New user was added.')
+    return render_template("adm_logs/total_steals.html", form=form)
+
+
+@app.route("/human_actions/escape", methods=['GET', 'POST'])
+@login_required
+def human_actions_escape():
+    form = HumanActionEscapeForm()
+    # if form.validate_on_submit():
+    # flash('New user was added.')
+    return render_template("human_actions/escape.html", form=form)
+
+
+@app.route("/human_actions/kill", methods=['GET', 'POST'])
+@login_required
+def human_actions_kill():
+    form = HumanActionKillForm()
+    # if form.validate_on_submit():
+    # flash('New user was added.')
+    return render_template("human_actions/kill.html", form=form,
+                           user=current_user)
+
+
+@app.route("/human_logs/kill", methods=['GET', 'POST'])
+@login_required
+def human_logs_kill():
+    form = TwoDatesForm()
+    # if form.validate_on_submit():
+    # flash('New user was added.')
+    return render_template("human_logs/kill.html", form=form,
+                           user=current_user)
+
+
+@app.route("/human_logs/ships", methods=['GET', 'POST'])
+@login_required
+def human_logs_ships():
+    form = TwoDatesForm()
+    # if form.validate_on_submit():
+    # flash('New user was added.')
+    return render_template("human_logs/ships.html", form=form,
+                           user=current_user)
+
+
+@app.route("/human_logs/steal", methods=['GET', 'POST'])
+@login_required
+def human_logs_steal():
+    form = NAndTwoDatesForm()
+    # if form.validate_on_submit():
+    # flash('New user was added.')
+    return render_template("human_logs/steal.html", form=form,
+                           user=current_user)
+
+
+@app.route("/human_logs/steal_and_kill", methods=['GET', 'POST'])
+@login_required
+def human_logs_steal_and_kill():
+    form = ShowButtonForm()
+    # if form.validate_on_submit():
+    # flash('New user was added.')
+    return render_template("human_logs/steal_and_kill.html", form=form,
+                           user=current_user)
+
+
+@app.route("/human_logs/experiment", methods=['GET', 'POST'])
+@login_required
+def human_logs_experiment():
+    form = NAndTwoDatesForm()
+    # if form.validate_on_submit():
+    # flash('New user was added.')
+    return render_template("human_logs/experiment.html", form=form,
+                           user=current_user)
+
+
+@app.route("/alien_actions/steal", methods=['GET', 'POST'])
+@login_required
+def alien_actions_steal():
+    form = AlienActionStealForm()
+    # if form.validate_on_submit():
+    # flash('New user was added.')
+    return render_template("alien_actions/steal.html", form=form,
+                           user=current_user)
+
+
+@app.route("/alien_actions/transportation", methods=['GET', 'POST'])
+@login_required
+def alien_actions_transportation():
+    form = AlienActionTransportationForm()
+    # if form.validate_on_submit():
+    # flash('New user was added.')
+    return render_template("alien_actions/transportation.html", form=form,
+                           user=current_user)
+
+
+@app.route("/alien_actions/excursion", methods=['GET', 'POST'])
+@login_required
+def alien_actions_excursion():
+    form = AlienActionExcursionForm()
+    # if form.validate_on_submit():
+    # flash('New user was added.')
+    return render_template("alien_actions/excursion.html", form=form,
+                           user=current_user)
