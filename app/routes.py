@@ -76,7 +76,7 @@ def add_user():
 
 @app.route("/admin_actions/add_ship", methods=['GET', 'POST'])
 @login_required
-def add_user():
+def admin_actions_add_ship():
     form = AdminActionAddShipForm()
     # if form.validate_on_submit():
     # flash('New user was added.')
@@ -85,7 +85,7 @@ def add_user():
 
 @app.route("/admin_actions/destroy_ship", methods=['GET', 'POST'])
 @login_required
-def add_user():
+def admin_actions_destroy_ship():
     form = AdminActionDestroyShipForm()
     # if form.validate_on_submit():
     # flash('New user was added.')
@@ -94,7 +94,7 @@ def add_user():
 
 @app.route("/admin_log/alien_steals", methods=['GET', 'POST'])
 @login_required
-def add_user():
+def admin_log_alien_steals():
     form = NAndTwoDatesForm()
     # if form.validate_on_submit():
     # flash('New user was added.')
@@ -103,7 +103,7 @@ def add_user():
 
 @app.route("/admin_log/excursions", methods=['GET', 'POST'])
 @login_required
-def add_user():
+def admin_log_excursions():
     form = AdminLogExcursionsForm()
     # if form.validate_on_submit():
     # flash('New user was added.')
@@ -112,7 +112,7 @@ def add_user():
 
 @app.route("/admin_log/human_steals", methods=['GET', 'POST'])
 @login_required
-def add_user():
+def admin_log_human_steals():
     form = NAndTwoDatesForm()
     # if form.validate_on_submit():
     # flash('New user was added.')
@@ -121,7 +121,7 @@ def add_user():
 
 @app.route("/admin_log/ships", methods=['GET', 'POST'])
 @login_required
-def add_user():
+def admin_log_ships():
     form = ShowButtonForm()
     # if form.validate_on_submit():
     # flash('New user was added.')
@@ -130,7 +130,7 @@ def add_user():
 
 @app.route("/admin_log/total_steals", methods=['GET', 'POST'])
 @login_required
-def add_user():
+def admin_log_total_steals():
     form = ShowButtonForm()
     # if form.validate_on_submit():
     # flash('New user was added.')
@@ -139,7 +139,7 @@ def add_user():
 
 @app.route("/human_actions/escape", methods=['GET', 'POST'])
 @login_required
-def add_user():
+def human_actions_escape():
     form = HumanActionEscapeForm()
     # if form.validate_on_submit():
     # flash('New user was added.')
@@ -148,7 +148,7 @@ def add_user():
 
 @app.route("/human_actions/kill", methods=['GET', 'POST'])
 @login_required
-def add_user():
+def human_actions_kill():
     form = HumanActionKillForm()
     # if form.validate_on_submit():
     # flash('New user was added.')
@@ -158,7 +158,7 @@ def add_user():
 
 @app.route("/human_logs/kill", methods=['GET', 'POST'])
 @login_required
-def add_user():
+def human_logs_kill():
     form = TwoDatesForm()
     # if form.validate_on_submit():
     # flash('New user was added.')
@@ -168,7 +168,7 @@ def add_user():
 
 @app.route("/human_logs/ships", methods=['GET', 'POST'])
 @login_required
-def add_user():
+def human_logs_ships():
     form = TwoDatesForm()
     # if form.validate_on_submit():
     # flash('New user was added.')
@@ -178,7 +178,7 @@ def add_user():
 
 @app.route("/human_logs/steal", methods=['GET', 'POST'])
 @login_required
-def add_user():
+def human_logs_steal():
     form = NAndTwoDatesForm()
     # if form.validate_on_submit():
     # flash('New user was added.')
@@ -188,7 +188,7 @@ def add_user():
 
 @app.route("/human_logs/steal_and_kill", methods=['GET', 'POST'])
 @login_required
-def add_user():
+def human_logs_steal_and_kill():
     form = ShowButtonForm()
     # if form.validate_on_submit():
     # flash('New user was added.')
@@ -198,7 +198,7 @@ def add_user():
 
 @app.route("/human_logs/experiment", methods=['GET', 'POST'])
 @login_required
-def add_user():
+def human_logs_experiment():
     form = NAndTwoDatesForm()
     # if form.validate_on_submit():
     # flash('New user was added.')
@@ -208,7 +208,7 @@ def add_user():
 
 @app.route("/alien_actions/steal", methods=['GET', 'POST'])
 @login_required
-def add_user():
+def alien_actions_steal():
     form = AlienActionStealForm()
     # if form.validate_on_submit():
     # flash('New user was added.')
@@ -218,7 +218,7 @@ def add_user():
 
 @app.route("/alien_actions/transportation", methods=['GET', 'POST'])
 @login_required
-def add_user():
+def alien_actions_transportation():
     form = AlienActionTransportationForm()
     # if form.validate_on_submit():
     # flash('New user was added.')
@@ -228,7 +228,7 @@ def add_user():
 
 @app.route("/alien_actions/excursion", methods=['GET', 'POST'])
 @login_required
-def add_user():
+def alien_actions_excursion():
     form = AlienActionExcursionForm()
     # if form.validate_on_submit():
     # flash('New user was added.')
