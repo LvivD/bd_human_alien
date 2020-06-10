@@ -140,39 +140,52 @@ def admin_log_alien_steals():
 @login_required
 def admin_log_excursions():
     form = AdminLogExcursionsForm()
-    # if form.validate_on_submit():
-    # flash('New user was added.')
+    res = ''
+    human_dict = DB.get_all_humans()
+    alien_dict = DB.get_all_aliens()
+    if form.validate_on_submit():
+        res = DB.common_exc_and_exp_for_human_and_alien(
+            human_dict[form.human.data],
+            alien_dict[form.alien.data],
+            form.date1.data,
+            form.date2.data)
     return render_template("adm_logs/excursions.html", form=form,
-                           user=current_user)
+                           user=current_user, res=res, 
+                           humans=list(human_dict.keys()),
+                           aliens=list(alien_dict.keys()))
 
 
 @app.route("/admin_log/human_steals", methods=['GET', 'POST'])
 @login_required
 def admin_log_human_steals():
     form = NAndTwoDatesForm()
-    # if form.validate_on_submit():
-    # flash('New user was added.')
+    res = ''
+    if form.validate_on_submit():
+        res = DB.were_thefted_more_then_n_times(form.date1.data, form.date2.data, form.n.data)
     return render_template("adm_logs/human_steals.html", form=form,
-                           user=current_user)
+                           user=current_user, res=res)
 
 
 @app.route("/admin_log/ships", methods=['GET', 'POST'])
 @login_required
 def admin_log_ships():
     form = ShowButtonForm()
-    # if form.validate_on_submit():
-    # flash('New user was added.')
-    return render_template("adm_logs/ships.html", form=form, user=current_user)
+    res = []
+    if form.validate_on_submit():
+        res = DB.get_ships_for_crashing()
+
+    return render_template("adm_logs/ships.html", form=form, user=current_user, res=res)
 
 
 @app.route("/admin_log/total_steals", methods=['GET', 'POST'])
 @login_required
 def admin_log_total_steals():
     form = ShowButtonForm()
-    # if form.validate_on_submit():
-    # flash('New user was added.')
+    res = []
+    if form.validate_on_submit():
+        res = DB.thefts_by_month()
     return render_template("adm_logs/total_steals.html", form=form,
-                           user=current_user)
+                           user=current_user, res=res)
 
 
 @app.route("/human_actions/escape", methods=['GET', 'POST'])

@@ -13,7 +13,7 @@
                 {{ form.hidden_tag() }}
                 <p>Aliens:</p>
                 <p>
-                    {% for alien in get_all_aliens %}
+                    {% for alien in aliens %}
                         <span>{{ alien }};</span>
                     {% endfor %}
                 </p>
@@ -26,7 +26,7 @@
                 </p>
                 <p>Humans:</p>
                 <p>
-                    {% for human in get_all_humans %}
+                    {% for human in humans %}
                         <span>{{ human }};</span>
                     {% endfor %}
                 </p>
@@ -52,6 +52,9 @@
                     {% endfor %}
                 </p>
                 <p>{{ form.submit() }}</p>
+                <h3>
+                    {{ res }}
+                </h3>
             </form>
         </div>
     </div>

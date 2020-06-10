@@ -13,6 +13,11 @@
                 {{ form.hidden_tag() }}
                 <p>{{ form.submit() }}</p>
             </form>
+            <h3>
+                {% for line in res %}
+                    <span>{{ line }}</span>  </br>
+                {% endfor %}
+            </h3>
         </div>
     </div>
 

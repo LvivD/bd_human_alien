@@ -12,11 +12,11 @@
     <header><h1 class='header-element' style="display:
                         flex; flex-direction:row;
                         justify-content: space-between;">
-        I want to believe
+        <a href="{{ url_for('index') }}">I want to believe</a>
         <a style="display: inline-block;
             height: 100%;
             width: 150px;"
-           href="{{ url_for("logout") }}">logout</a></h1></header>
+           href="{{ url_for('logout') }}">logout</a></h1></header>
     <div class="main-element">
         {% with messages = get_flashed_messages() %}
             {% if messages %}

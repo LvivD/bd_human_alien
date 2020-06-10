@@ -149,33 +149,33 @@ class DB:
     def get_all_aliens():
         cursor = DB.conn.cursor()
         cursor.execute(
-                """SELECT username FROM users WHERE role = False;""")
+                """SELECT username, id FROM users WHERE role = False;""")
         aliens_list = cursor.fetchall()
         cursor.close()
-
+        alien_dict = {} 
         for i in range(len(aliens_list)):
             try:
-                aliens_list[i] = aliens_list[i][0]
+                alien_dict[aliens_list[i][0]] = aliens_list[i][1]
             except Exception:
-                aliens_list[i] = []
-        print(aliens_list)
-        return aliens_list
+                pass
+        print(alien_dict)
+        return alien_dict
 
     @staticmethod
     def get_all_humans():
         cursor = DB.conn.cursor()
         cursor.execute(
-                """SELECT username FROM users WHERE role = True;""")
+                """SELECT username, id FROM users WHERE role = True;""")
         humans_list = cursor.fetchall()
         cursor.close()
-
+        human_dict = {}
         for i in range(len(humans_list)):
             try:
-                humans_list[i] = humans_list[i][0]
+                human_dict[humans_list[i][0]] = humans_list[i][1]
             except Exception:
-                humans_list[i] = []
-        print(humans_list)
-        return humans_list
+                pass
+        print(human_dict)
+        return human_dict
 
     @staticmethod
     def add_user(username, password_hash, role):
@@ -203,6 +203,9 @@ class DB:
         result = []
         for name in ships_names:
             result.append(name[0])
+        print('all ships:', result)
+        if not result:
+            return ["No ships are available or all of them are destroyed"]
         return result
 
     @staticmethod
@@ -423,6 +426,74 @@ class DB:
 
             return line
         return 'No one achieved it.'
+
+    # 7 works
+    @staticmethod
+    def were_thefted_more_then_n_times(frm, to, n):
+        cursor = DB.conn.cursor()
+        cursor.execute(
+            """SELECT username FROM (SELECT human_id FROM theft WHERE date BETWEEN '{From}' AND '{To}' GROUP BY human_id HAVING COUNT(human_id) >= {N}) AS tb
+            INNER JOIN users ON users.id = tb.human_id""".format(From=frm, To=to, N=n))
+        DB.conn.commit()
+        line = "Thefted more then " + str(n) + " times: "
+        humans = cursor.fetchall()
+        for i in range(len(humans) - 1):
+            line += humans[i][0] + ', '
+        cursor.close()
+        if humans:
+            line += humans[-1][0] + '. '
+
+            return line
+        return 'No human fulfill the condition.'
+
+    # 8 works
+    @staticmethod
+    def common_exc_and_exp_for_human_and_alien(human, alien, frm, to):
+        cursor = DB.conn.cursor()
+        cursor.execute(
+            """SELECT id, 'excursion' as type FROM excursion WHERE alien_id = {Alien} AND date BETWEEN '{From}' AND '{To}' AND EXISTS (SELECT count(*) FROM groups WHERE id = {Human})
+            UNION SELECT id, 'experiment' as type FROM experiment WHERE human_id = {Human} AND date BETWEEN '{From}' AND '{To}' AND EXISTS (SELECT count(*) FROM groups WHERE id = {Alien})""".format(
+                Human=human, Alien=alien, From=frm, To=to))
+        excursions = []
+        experiments = []
+        DB.conn.commit()
+        exc_exp = cursor.fetchall()
+        for i in exc_exp:
+            if i[1] == 'excursion':
+                excursions.append(i[0])
+            else:
+                experiments.append(i[0])
+        line = 'Excursions: '
+        for i in range(len(excursions) - 1):
+            line += str(excursions[i]) + ', '
+        if len(excursions):
+            line += str(excursions[-1]) + '.'
+        line += '\nExperiments: '
+        for i in range(len(experiments) - 1):
+            line += str(experiments[i]) + ', '
+        if len(experiments):
+            line += str(experiments[-1]) + '.'
+        cursor.close()
+        if exc_exp:
+            return line
+        return 'No excursion'
+
+    # 11 - works
+    @staticmethod
+    def thefts_by_month():
+        cursor = DB.conn.cursor()
+        cursor.execute(
+            """SELECT date_trunc( 'month', date ), count(*)  from theft group by date_trunc( 'month', date )""")
+        DB.conn.commit()
+        line = []
+        thefts_by_month = cursor.fetchall()
+        for i in thefts_by_month:
+            line.append('In ' + str(i[0]) + ' were ' + str(i[1]) + ' thefts.')
+        cursor.close()
+        if thefts_by_month:
+            return line
+        else:
+            return ['The are no stealts at all']
 
 
 
