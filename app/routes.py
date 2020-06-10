@@ -285,7 +285,7 @@ def alien_actions_steal():
     form = AlienActionStealForm()
     if form.validate_on_submit():
         DB.alien_take_human_to_ship(current_user.id, form)
-        flash('New user was added.')
+        flash('Stolen.')
     return render_template("alien_actions/steal.html", form=form,
                            user=current_user)
 
@@ -304,8 +304,10 @@ def alien_actions_transportation():
 @login_required
 def alien_actions_excursion():
     form = AlienActionExcursionForm()
-    # if form.validate_on_submit():
-    # flash('New user was added.')
+    if form.validate_on_submit():
+        # DB.alien_take_human_to_ship(current_user.id, form)
+        DB.make_excursion(current_user.id, form)
+        flash('Excursion done')
     return render_template("alien_actions/excursion.html", form=form,
                            user=current_user)
 
@@ -314,8 +316,10 @@ def alien_actions_excursion():
 @login_required
 def alien_actions_experiment():
     form = AlienActionExperimentForm()
-    # if form.validate_on_submit():
-    # flash('New user was added.')
+    if form.validate_on_submit():
+        # DB.alien_take_human_to_ship(current_user.id, form)
+        DB.make_experiment(current_user.id, form)
+        flash('Experiment done')
     return render_template("alien_actions/experiment.html", form=form,
                            user=current_user)
 
