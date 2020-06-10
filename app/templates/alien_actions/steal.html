@@ -8,9 +8,14 @@
         <h2 class="header-element">
             Steal a human on the ship
         </h2>
-        <div class="main-element">
+        <div class="main-element">get_all_humans_without_ship
             <form action="" method="post" novalidate>
-                {{ form.hidden_tag() }}
+                <p>Humans without a ship:</p>
+                <p>
+                    {% for human in get_all_humans_without_ship %}
+                        <span>{{ human }};</span>
+                    {% endfor %}
+                </p>
                 <p>
                     {{ form.human.label }}<br>
                     {{ form.human(size=45) }}<br>

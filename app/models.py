@@ -210,6 +210,31 @@ class DB:
         return response
 
     @staticmethod
+    def get_all_humans_on_ship(alien_id):
+        print("get_all_humans_on_the_ship id:", alien_id)
+        # command = """SELECT alien_id from alien_group where alien_group_id = (select alien_group_id from starship where id = (select place_id from users where id = (SELECT user_id from human where id = {human_id})))""".format(
+        #         human_id=human_id)
+        # response_id = DB.template_of_cursor(command)
+        # response = {}
+        # for human in response_id:
+        #     id = human[0]
+        #     command = """SELECT username FROM users where id=(select user_id from alien where id={id});""".format(
+        #             id=id)
+        #     name = DB.template_of_cursor(command)
+        #     name = name[0][0]
+        #     response[name] = id
+        # print(response)
+        # return response
+
+    @staticmethod
+    def get_all_humans_without_ship(alien_id):
+        pass
+
+    @staticmethod
+    def get_all_ships(alien_id):
+        pass
+
+    @staticmethod
     def add_user(username, password_hash, role):
         if role == 'human':
             role_to_add = True

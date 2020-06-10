@@ -92,22 +92,7 @@ class AlienActionExperimentForm(FlaskForm):
 
 class AlienActionTransportationForm(FlaskForm):
     # show all ships
-    departure = StringField('From ship', validators=[DataRequired()])
-    # show all ships
     destination = StringField('To ship', validators=[DataRequired()])
     # show all humans from ship
-    human = StringField('Human', validators=[DataRequired()])
-
-    submit = SubmitField('Do')
-
-
-class AlienLogsExperimentForm(FlaskForm):
-    # show all humans from ship
-    human = StringField('Human', validators=[DataRequired()])
-    submit = SubmitField('Do')
-
-
-class AlienLogsStealForm(FlaskForm):
-    # show all humans without ship
     human = StringField('Human', validators=[DataRequired()])
     submit = SubmitField('Do')
