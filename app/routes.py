@@ -115,6 +115,7 @@ def admin_actions_add_ship():
 @login_required
 def admin_actions_destroy_ship():
     form = AdminActionDestroyShipForm()
+    ships_dict = DB.get_ships_dict()
     # if form.validate_on_submit():
     # flash('New user was added.')
     return render_template("admin_actions/destroy_ship.html", form=form,

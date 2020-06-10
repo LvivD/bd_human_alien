@@ -31,22 +31,8 @@ class ShowButtonForm(FlaskForm):
 
 
 class HumanActionKillForm(FlaskForm):
-    # def __init__(self, id):
-    #     super().__init__()
-    #     self._id = id
-    #     aliens_list = DB.get_all_aliens_on_the_ship(self._id)
-    #     self.aliens_list = [(alien, alien) for alien in aliens_list]
-    #     self.alien = RadioField('Aliens', choices=aliens_list)
-
-    # aliens_list = []
-    # alien = RadioField('Aliens', choices=aliens_list)
     alien = StringField('Victim', validators=[DataRequired()])
     submit = SubmitField('Do!')
-
-    # def choose_human(self, id):
-    #     self.aliens_list = DB.get_all_aliens_on_the_ship(id)
-    #     self.aliens_list = [(alien, alien) for alien in self.aliens_list]
-    #     self.alien = RadioField('Aliens', choices=self.aliens_list)
 
 
 class HumanActionEscapeForm(FlaskForm):
