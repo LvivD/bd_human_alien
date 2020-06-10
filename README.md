@@ -29,3 +29,9 @@ http://localhost:8080/
 or just
 
 https://alien-human.herokuapp.com/
+
+---
+## Important
+date format:
+
+yyyy-mm-dd
