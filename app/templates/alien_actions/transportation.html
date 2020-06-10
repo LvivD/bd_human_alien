@@ -11,11 +11,10 @@
         <div class="main-element">
             <form action="" method="post" novalidate>
                 {{ form.hidden_tag() }}
+                <p>Destination ship:</p>
                 <p>
-                    {{ form.departure.label }}<br>
-                    {{ form.departure(size=45) }}<br>
-                    {% for error in form.departure.errors %}
-                        <span style="color: red;">[{{ error }}]</span>
+                    {% for ship in get_all_ships %}
+                        <span>{{ ship }};</span>
                     {% endfor %}
                 </p>
                 <p>
@@ -25,10 +24,16 @@
                         <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
                 </p>
+                <p>Humans on a ship:</p>
                 <p>
-                    {{ form.whom.label }}<br>
-                    {{ form.whom(size=45) }}<br>
-                    {% for error in form.whom.errors %}
+                    {% for human in get_all_humans_on_ship %}
+                        <span>{{ human }};</span>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.human.label }}<br>
+                    {{ form.human(size=45) }}<br>
+                    {% for error in form.human.errors %}
                         <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
                 </p>

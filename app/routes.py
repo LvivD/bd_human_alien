@@ -298,7 +298,7 @@ def alien_actions_experiment():
 @app.route("/alien_logs/excursion", methods=['GET', 'POST'])
 @login_required
 def alien_logs_experiment():
-    form = AlienLogsExperimentForm()
+    form = NAndTwoDatesForm()
     # if form.validate_on_submit():
     # flash('New user was added.')
     return render_template("alien_logs/excursion.html", form=form,
@@ -308,7 +308,7 @@ def alien_logs_experiment():
 @app.route("/alien_logs/steal", methods=['GET', 'POST'])
 @login_required
 def alien_logs_steal():
-    form = AlienLogsStealForm()
+    form = NAndTwoDatesForm()
     # if form.validate_on_submit():
     # flash('New user was added.')
     return render_template("alien_logs/steal.html", form=form,

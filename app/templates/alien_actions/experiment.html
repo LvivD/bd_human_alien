@@ -10,7 +10,13 @@
         </h2>
         <div class="main-element">
             <form action="" method="post" novalidate>
-                {{ form.hidden_tag() }}
+            {{ form.hidden_tag() }}
+                <p>Aliens on ship:</p>
+                <p>
+                    {% for human in humans_on_ship %}
+                        <span>{{ human }};</span>
+                    {% endfor %}
+                </p>
                 <p>
                     {{ form.human.label }}<br>
                     {{ form.human(size=45) }}<br>
