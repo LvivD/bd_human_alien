@@ -181,26 +181,29 @@ class DB:
     def add_user(username, password_hash, role):
         if role == 'human':
             role_to_add = True
+            command = """insert into  users values ((SELECT Max(id) + 1 from users), '{username}', '{pasword_hash}', {role}, True, False, 1)""".format(
+                username=username, pasword_hash=password_hash, role=role_to_add)
         else:
             role_to_add = False
-        command = """insert into  users values ((SELECT Max(id) + 1 from users), '{username}', '{username}', '{pasword_hash}', {role}, True, False, 1)""".format(
-            username=username, pasword_hash=password_hash, role=role_to_add)
+            available_ships = DB.get_ships_for_crashing()
+            if len(available_ships) == 0:
+                available_ships = [-1]
+            else:
+                available_ships = [DB.template_of_cursor("""SELECT id from starship where name = '{name}';""".format(name=available_ships[0]))[0][0]]
+            command = """insert into  users values ((SELECT Max(id) + 1 from users), '{username}', '{pasword_hash}', {role}, True, True, {ship_id})""".format(
+                username=username, pasword_hash=password_hash, role=role_to_add, ship_id=available_ships[0])
+        
         response_id = DB.template_of_cursor(command)
         print("add user responce:",response_id)
         print("add user", username, password_hash, role)
-        pass
 
-    # людина вбиває прибульця (НАЧИНКА ФУНКЦІЇ)
     @staticmethod
-    def human_kill_alien(human_id, alien_id):
-        command = """INSERT INTO murder (id, human_id, alien_id, DATE) VALUES ((SELECT Max(id) + 1 from murder),{human_id}, {alien_id}, CURRENT_DATE);update users set alive = false where id = (SELECT user_id from alien where id = {alien_id});DELETE from alien_group where alien_group_id = (SELECT alien_group_id FROM starship where id = (SELECT place_id FROM users where id = (SELECT user_id from alien where id = {alien_id}))) and alien_id = {alien_id};""".format(
-                human_id=human_id, alien_id=alien_id)
-        try:
-            DB.template_of_cursor(command)
-        except Exception as excp:
-            print("human_kill_alien exeption:",excp)
-            return False
-        return True
+    def get_ships_for_crashing():
+        ships_names = DB.template_of_cursor("""select name from starship where (Select alive from users where id = (select max(user_id) from groups where id = group_id))=true;""")
+        result = []
+        for name in ships_names:
+            result.append(name[0])
+        return result
 
     @staticmethod
     def get_info_by_user(user_id):
@@ -223,10 +226,6 @@ class DB:
         print('get_info_by_user')
         print(starship_name, humans, aliens)
         return (starship_name, starship_id), humans, aliens
-
-     # @staticmethod
-    # def escape_from_ship(user_id):
-    #     pass
         
     @staticmethod
     def get_ships_dict():
@@ -235,20 +234,14 @@ class DB:
     @staticmethod
     def alien_take_human_to_ship(alien_id, human_id):
         starship_id = DB.get_info_by_user(alien_id)[0][1]
-        DB.action_1(alien_id, human_id, starship_id, "CURRENT_DATE")
+        DB.action_1(alien_id, human_id, starship_id, 'CURRENT_DATE')
 
     # прибулець викрадає людину на корабель
     @staticmethod
     def action_1(alien_id, human_id, starship_id, date):
-        command = """INSERT INTO theft VALUES ((select max(id)+1 from theft), {alien_id}, {human_id}, {starship_id}, '{date}'); update users set in_starship = true where id = {human_id}; update users set place_id = {starship_id} where id = {human_id}; Insert into groups values((select group_id from starship where id = {starship_id}), {human_id}); Insert into human_travel_history values ((select max(id) + 1 from human_travel_history), {starship_id}, {human_id}, '{date}', null);""".format(alien_id=alien_id, human_id=human_id, starship_id=starship_id, date=date)
+        command = """INSERT INTO theft VALUES ((select max(id)+1 from theft), {alien_id}, {human_id}, {starship_id}, CURRENT_DATE); update users set in_starship = true where id = {human_id}; update users set place_id = {starship_id} where id = {human_id}; Insert into groups values((select group_id from starship where id = {starship_id}), {human_id}); Insert into human_travel_history values ((select max(id) + 1 from human_travel_history), {starship_id}, {human_id}, CURRENT_DATE, null);""".format(alien_id=alien_id, human_id=human_id, starship_id=starship_id)
         DB.template_of_cursor(command)
 
-    # людина тікає з космічного корабля
-    @staticmethod
-    def escape_from_ship(human_id):
-        starship_id = DB.get_info_by_user(human_id)[0][1]
-        command = """INSERT INTO escapism values((select max(id) + 1 from escappism), {human_id}, {starship_id}, CURRENT_DATE ); update users set in_starship = false where id = {human_id}; update users set place_id = 1 where id = {human_id}; DELETE from groups where id = (select group_id from starship where id = {starship_id}) and user_id = {human_id}; Update human_travel_history set to_date = {date} where starship_id = {starship_id} and human_id={human_id} and to_date=null;""".format(starship_id=starship_id, human_id=human_id)
-        DB.template_of_cursor(command)
 
     # 2
     @staticmethod
@@ -351,13 +344,86 @@ class DB:
     def excursions_by_alien_with_more_then_n(alien, frm, to, n):
         cursor = DB.conn.cursor()
         cursor.execute(
-            """SELECT count(*) FROM excursion INNER JOIN (SELECT id, count(id) as cnt FROM groups GROUP BY id) AS tb ON excursion.group_id = tb.id  WHERE group_id = {Alien} AND date BETWEEN '{From}' AND '{To}' AND cnt >= {N}""".format(
+            """SELECT count(*) FROM excursion INNER JOIN (SELECT id, count(id) as cnt FROM groups GROUP BY id) AS tb ON excursion.group_id = tb.id  WHERE alien_id = {Alien} AND date BETWEEN '{From}' AND '{To}' AND cnt >= {N}""".format(
                 Alien=alien, From=frm, To=to, N=n))
 
         DB.conn.commit()
         id = cursor.fetchall()
         cursor.close()
         return 'Have lead ' + str(id[0][0]) + ' excursion with more then ' + str(n) + ' people from ' + str(frm) + ' to ' + str(to) + '. '
+
+    # людина вбиває прибульця
+    @staticmethod
+    def action_6(human_id, alien_id, date):
+        command = """Insert into murder values ((select max(id) + 1 from murder), {human_id}, {alien_id}, {date}); Update users set alive= false where id = {alien_id}; delete from groups where id = (select group_id from starship where id = (select place_id from users where id = {alien_id})) and user_id = {alien_id};""".format(
+            alien_id=alien_id, human_id=human_id, date=date)
+        DB.template_of_cursor(command)
+
+    @staticmethod
+    def human_kill_alien(human_id, alien_id):
+        try:
+            DB.action_6(human_id, alien_id, 'CURRENT_DATE')
+            return True
+        except Exception as exc:
+            print("human_kill_alien", exc)
+            return False
+
+    # людина тікає з космічного корабля
+    @staticmethod
+    def action_2(human_id, starship_id, date):
+        command = """INSERT INTO escapism values((select max(id)+1 from escapism), {human_id}, {starship_id}, {date}); update users set in_starship = false where id = {human_id}; update users set place_id = 1 where id = {human_id}; DELETE from groups where id = (select group_id from starship where id = {starship_id}) and user_id = {human_id}; Update human_travel_history set to_date = {date} where starship_id = {starship_id} and human_id={human_id} and to_date=null;""".format(
+            starship_id=starship_id, human_id=human_id, date=date)
+        DB.template_of_cursor(command)
+
+    # людина тікає з космічного корабля
+    @staticmethod
+    def escape_from_ship(human_id):
+        starship_id = DB.get_info_by_user(human_id)[0][1]
+        DB.action_2(human_id, starship_id, 'CURRENT_DATE')
+
+    # корабель розбивається
+    @staticmethod
+    def action_7(starship_id, date):
+        command = """Insert into crash values ((select max(id)+1 from crash), {starship_id}, {date});""".format(
+            starship_id=starship_id, date=date)
+        DB.template_of_cursor(command)
+        neighbors_id = DB.template_of_cursor(
+            """SELECT user_id FROM groups WHERE id = (select group_id from starship where id = {starship_id})""".format(
+                starship_id=starship_id))
+        for id in neighbors_id:
+            id = str(id[0])
+            DB.template_of_cursor(
+                """UPDATE users set alive = false where id= {id};""".format(
+                    id=id))
+    
+    @staticmethod
+    def destroy_ship(starship_name):
+        DB.action_7(
+            starship_id=DB.template_of_cursor("""SELECT id from starship where name = '{name}';""".format(name=starship_name))[0][0], 
+            date='CURRENT_DATE')
+
+    # 6 works
+    @staticmethod
+    def aliens_that_theft_more_then_n(frm, to, n):
+        cursor = DB.conn.cursor()
+        cursor.execute(
+            """SELECT username FROM (SELECT alien_id FROM
+            (SELECT alien_id, human_id FROM theft WHERE date BETWEEN '{From}' AND '{To}' GROUP BY alien_id, human_id)
+            as thefts GROUP BY alien_id HAVING COUNT(alien_id) >= {N}) AS tb
+            INNER JOIN users ON users.id = tb.alien_id""".format(From=frm, To=to, N=n))
+
+        DB.conn.commit()
+        line = "Aliens that have stolen more then N different people during period " + str(frm) + ' - ' + str(to) + ': '
+        aliens = cursor.fetchall()
+        for i in range(len(aliens) - 1):
+            line += aliens[i][0] + ', '
+        cursor.close()
+        if aliens:
+            line += aliens[-1][0] + '. '
+
+            return line
+        return 'No one achieved it.'
+
 
 
 

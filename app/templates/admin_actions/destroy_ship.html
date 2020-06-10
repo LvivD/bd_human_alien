@@ -9,6 +9,9 @@
             Destroy a ship, make a crash and kill everyone on the ship.
         </h2>
         <div class="main-element">
+            {% for ship in ships %}
+                <span>{{ ship }};</span>
+            {% endfor %}
             <form action="" method="post" novalidate>
                 {{ form.hidden_tag() }}
                 <p>

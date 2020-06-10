@@ -115,21 +115,25 @@ def admin_actions_add_ship():
 @login_required
 def admin_actions_destroy_ship():
     form = AdminActionDestroyShipForm()
-    ships_dict = DB.get_ships_dict()
-    # if form.validate_on_submit():
-    # flash('New user was added.')
+    ships_dict = DB.get_ships_for_crashing()
+    if form.validate_on_submit():
+        if form.ship.data in ships_dict:
+            DB.destroy_ship(form.ship.data)
+            flash('Ship was destroyed.')
+        flash('Wrong ship name.')
     return render_template("admin_actions/destroy_ship.html", form=form,
-                           user=current_user)
+                           user=current_user, ships=ships_dict)
 
 
 @app.route("/admin_log/alien_steals", methods=['GET', 'POST'])
 @login_required
 def admin_log_alien_steals():
     form = NAndTwoDatesForm()
-    # if form.validate_on_submit():
-    # flash('New user was added.')
+    res = ''
+    if form.validate_on_submit():
+        res = DB.aliens_that_theft_more_then_n(form.date1.data, form.date2.data, form.n.data)
     return render_template("adm_logs/alien_steals.html", form=form,
-                           user=current_user)
+                           user=current_user, res=res)
 
 
 @app.route("/admin_log/excursions", methods=['GET', 'POST'])
@@ -176,10 +180,9 @@ def admin_log_total_steals():
 def human_actions_escape():
     form = HumanActionEscapeForm()
     if form.validate_on_submit():
-        if DB.escape_from_ship(current_user.id):
-            flash('You escaped.')
-            return redirect(url_for(current_user.role))
-        flash("You didn't escape.")
+        DB.escape_from_ship(current_user.id)
+        flash('You escaped.')
+        return redirect(url_for(current_user.role))
     return render_template("human_actions/escape.html", form=form,
                            user=current_user)
 
@@ -194,7 +197,6 @@ def human_actions_kill():
         if form.alien.data in list(aliens_on_ship.keys()):
             res = DB.human_kill_alien(current_user.id,
                                       aliens_on_ship[form.alien.data])
-
             if res:
                 flash('Alien was killed')
                 return redirect(url_for("index"))
