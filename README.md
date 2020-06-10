@@ -8,9 +8,13 @@ admin password: admin
 ---
 to start 
 ```
-pip3 install requirements.txt
+pip3 install -r requirements.txt
 python web_page.py
 ```
 then go by link
 
 http://localhost:8080/
+
+or just
+
+https://alien-human.herokuapp.com/
