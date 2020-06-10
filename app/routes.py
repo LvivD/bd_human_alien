@@ -172,7 +172,7 @@ def admin_log_ships():
     form = ShowButtonForm()
     res = []
     if form.validate_on_submit():
-        res = DB.get_ships_for_crashing()
+        res = DB.get_all_ships()
 
     return render_template("adm_logs/ships.html", form=form, user=current_user, res=res)
 

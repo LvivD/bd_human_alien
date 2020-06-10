@@ -178,6 +178,22 @@ class DB:
         return human_dict
 
     @staticmethod
+    def get_all_ships():
+        cursor = DB.conn.cursor()
+        cursor.execute(
+                """SELECT name, id FROM starship;""")
+        ships_list = cursor.fetchall()
+        cursor.close()
+        ships_dict = {}
+        for i in range(len(ships_list)):
+            try:
+                ships_dict[ships_list[i][0]] = ships_list[i][3]
+            except Exception:
+                pass
+        print(ships_dict)
+        return ships_dict
+
+    @staticmethod
     def add_user(username, password_hash, role):
         if role == 'human':
             role_to_add = True
