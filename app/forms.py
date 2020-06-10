@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import (StringField, PasswordField, BooleanField, SubmitField,
                      DateField, DecimalField, RadioField)
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, InputRequired
 
 from app.models import DB
 
@@ -14,7 +14,7 @@ class LoginForm(FlaskForm):
 
 
 class NAndTwoDatesForm(FlaskForm):
-    n = DecimalField(validators=[DataRequired()])
+    n = DecimalField(validators=[InputRequired()])
     date1 = DateField(validators=[DataRequired()])
     date2 = DateField(validators=[DataRequired()])
     submit = SubmitField('Show')

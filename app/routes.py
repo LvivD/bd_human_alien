@@ -188,7 +188,7 @@ def human_actions_escape():
 @login_required
 def human_actions_kill():
     form = HumanActionKillForm()
-    aliens_on_ship = DB.get_all_aliens_on_the_ship(current_user.id)
+    aliens_on_ship = DB.get_info_by_user(current_user.id)[2]
 
     if form.validate_on_submit():
         if form.alien.data in list(aliens_on_ship.keys()):
@@ -212,59 +212,65 @@ def human_actions_kill():
 @login_required
 def human_logs_kill():
     form = TwoDatesForm()
+    res=""
     if form.validate_on_submit():
-
-        flash('New user was added.')
+        res = DB.killed_by_me(current_user.id, form.date1.data, form.date2.data)
     return render_template("human_logs/kill.html", form=form,
-                           user=current_user)
+                           user=current_user, res=res)
 
 
 @app.route("/human_logs/ships", methods=['GET', 'POST'])
 @login_required
 def human_logs_ships():
     form = TwoDatesForm()
-    # if form.validate_on_submit():
-    # flash('New user was added.')
-    return render_template("human_logs/ships.html", form=form,
-                           user=current_user)
+    ships = ""
+    if form.validate_on_submit():
+        ships = DB.ships_visited(current_user.id, form.date1.data, form.date2.data)[2:]
+    return render_template("human_logs/ships.html", form=form, user=current_user, ships=ships)
 
 
 @app.route("/human_logs/steal", methods=['GET', 'POST'])
 @login_required
 def human_logs_steal():
     form = NAndTwoDatesForm()
-    # if form.validate_on_submit():
-    # flash('New user was added.')
+    res = ""
+    if form.validate_on_submit():
+        res = DB.get_all_who_theft_me_more_then_n(current_user.id, form.date1.data, form.date2.data, form.n.data)
+        print(res)
     return render_template("human_logs/steal.html", form=form,
-                           user=current_user)
+                           user=current_user, res=res)
 
 
 @app.route("/human_logs/steal_and_kill", methods=['GET', 'POST'])
 @login_required
 def human_logs_steal_and_kill():
     form = ShowButtonForm()
-    # if form.validate_on_submit():
-    # flash('New user was added.')
+    res = ""
+    if form.validate_on_submit():
+        res = DB.theft_and_killed_by_me(current_user.id)
+        print(res)
     return render_template("human_logs/steal_and_kill.html", form=form,
-                           user=current_user)
+                           user=current_user, res=res)
 
 
 @app.route("/human_logs/experiment", methods=['GET', 'POST'])
 @login_required
 def human_logs_experiment():
     form = NAndTwoDatesForm()
-    # if form.validate_on_submit():
-    # flash('New user was added.')
+    res = ""
+    if form.validate_on_submit():
+        res = DB.experimented_by_n(current_user.id, form.date1.data, form.date2.data, form.n.data)
     return render_template("human_logs/experiment.html", form=form,
-                           user=current_user)
+                           user=current_user, res=res)
 
 
 @app.route("/alien_actions/steal", methods=['GET', 'POST'])
 @login_required
 def alien_actions_steal():
     form = AlienActionStealForm()
-    # if form.validate_on_submit():
-    # flash('New user was added.')
+    if form.validate_on_submit():
+        DB.alien_take_human_to_ship(current_user.id, fo)
+        flash('New user was added.')
     return render_template("alien_actions/steal.html", form=form,
                            user=current_user)
 
@@ -303,10 +309,11 @@ def alien_actions_experiment():
 @login_required
 def alien_logs_experiment():
     form = NAndTwoDatesForm()
-    # if form.validate_on_submit():
-    # flash('New user was added.')
+    res = ''
+    if form.validate_on_submit():
+        res = DB.excursions_by_alien_with_more_then_n(current_user.id, form.date1.data, form.date2.data, form.n.data)
     return render_template("alien_logs/excursion.html", form=form,
-                           user=current_user)
+                           user=current_user, res=res)
 
 
 @app.route("/alien_logs/steal", methods=['GET', 'POST'])

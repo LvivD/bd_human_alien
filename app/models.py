@@ -177,63 +177,6 @@ class DB:
         print(humans_list)
         return humans_list
 
-    # @staticmethod
-    # def get_all_aliens_on_the_ship(human_id):
-    #     print("get_all_aliens_on_the_ship id:", human_id)
-    #     command = """select username form (SELECT alien_id from alien_group where alien_group_id = (select alien_group_id from starship where id = (select place_id from users where id = (SELECT user_id from human where id = {human_id}))) as id_alien join users on id_alien.id = users.idselect username form (SELECT alien_id from alien_group where alien_group_id = (select alien_group_id from starship where id = (select place_id from users where id = (SELECT user_id from human where id = {human_id}))) as id_alien join users on id_alien.id = users.id""".format(human_id=human_id)
-    #     aliens_list = DB.template_of_cursor(command)
-    #     if len(aliens_list) == 0:
-    #         return []
-    #     for i in range(len(aliens_list)):
-    #         try:
-    #             aliens_list[i] = aliens_list[i][0]
-    #         except Exception:
-    #             aliens_list[i] = []
-    #     print(aliens_list)
-    #     return aliens_list
-
-    @staticmethod
-    def get_all_aliens_on_the_ship(human_id):
-        print("get_all_aliens_on_the_ship id:", human_id)
-        command = """SELECT alien_id from alien_group where alien_group_id = (select alien_group_id from starship where id = (select place_id from users where id = (SELECT user_id from human where id = {human_id})))""".format(
-                human_id=human_id)
-        response_id = DB.template_of_cursor(command)
-        response = {}
-        for alien in response_id:
-            id = alien[0]
-            command = """SELECT username FROM users where id=(select user_id from alien where id={id});""".format(
-                    id=id)
-            name = DB.template_of_cursor(command)
-            name = name[0][0]
-            response[name] = id
-        print(response)
-        return response
-
-    @staticmethod
-    def get_all_humans_on_ship(alien_id):
-        print("get_all_humans_on_the_ship id:", alien_id)
-        # command = """SELECT alien_id from alien_group where alien_group_id = (select alien_group_id from starship where id = (select place_id from users where id = (SELECT user_id from human where id = {human_id})))""".format(
-        #         human_id=human_id)
-        # response_id = DB.template_of_cursor(command)
-        # response = {}
-        # for human in response_id:
-        #     id = human[0]
-        #     command = """SELECT username FROM users where id=(select user_id from alien where id={id});""".format(
-        #             id=id)
-        #     name = DB.template_of_cursor(command)
-        #     name = name[0][0]
-        #     response[name] = id
-        # print(response)
-        # return response
-
-    @staticmethod
-    def get_all_humans_without_ship(alien_id):
-        pass
-
-    @staticmethod
-    def get_all_ships(alien_id):
-        pass
-
     @staticmethod
     def add_user(username, password_hash, role):
         if role == 'human':
@@ -260,8 +203,162 @@ class DB:
         return True
 
     @staticmethod
-    def escape_from_ship(user_id):
+    def get_info_by_user(user_id):
+        starship_id = DB.template_of_cursor("""SELECT place_id FROM users WHERE id = {user_id}""".format(user_id=user_id))[0][0]
+        starship_name = DB.template_of_cursor("""SELECT name from starship where id = {starship_id}""".format(starship_id=starship_id))[0][0]
+        neighbors_id = DB.template_of_cursor("""SELECT user_id FROM groups WHERE id = (select group_id from starship where id = {starship_id})""".format(starship_id=starship_id))
+        aliens = {}
+        humans = {}
+        for id in neighbors_id:
+            id = str(id[0])
+            if id == str(user_id):
+                continue
+            role = DB.template_of_cursor("""SELECT role from users where id = {id};""".format(id=id))[0][0]
+            username = DB.template_of_cursor("""SELECT username from users where id = {id};""".format(id=id))[0][0]
+            if role:
+                humans[username] = id
+            if role is False:
+                aliens[username] = id 
+            
+        print('get_info_by_user')
+        print(starship_name, humans, aliens)
+        return (starship_name, starship_id), humans, aliens
+
+     # @staticmethod
+    # def escape_from_ship(user_id):
+    #     pass
+        
+    @staticmethod
+    def get_ships_dict():
         pass
+
+    @staticmethod
+    def alien_take_human_to_ship(alien_id, human_id):
+        starship_id = DB.get_info_by_user(alien_id)[0][1]
+        DB.action_1(alien_id, human_id, starship_id, "CURRENT_DATE")
+
+    # прибулець викрадає людину на корабель
+    @staticmethod
+    def action_1(alien_id, human_id, starship_id, date):
+        command = """INSERT INTO theft VALUES ((select max(id)+1 from theft), {alien_id}, {human_id}, {starship_id}, '{date}'); update users set in_starship = true where id = {human_id}; update users set place_id = {starship_id} where id = {human_id}; Insert into groups values((select group_id from starship where id = {starship_id}), {human_id}); Insert into human_travel_history values ((select max(id) + 1 from human_travel_history), {starship_id}, {human_id}, '{date}', null);""".format(alien_id=alien_id, human_id=human_id, starship_id=starship_id, date=date)
+        DB.template_of_cursor(command)
+
+    # людина тікає з космічного корабля
+    @staticmethod
+    def escape_from_ship(human_id):
+        starship_id = DB.get_info_by_user(human_id)[0][1]
+        command = """INSERT INTO escapism values((select max(id) + 1 from escappism), {human_id}, {starship_id}, CURRENT_DATE ); update users set in_starship = false where id = {human_id}; update users set place_id = 1 where id = {human_id}; DELETE from groups where id = (select group_id from starship where id = {starship_id}) and user_id = {human_id}; Update human_travel_history set to_date = {date} where starship_id = {starship_id} and human_id={human_id} and to_date=null;""".format(starship_id=starship_id, human_id=human_id)
+        DB.template_of_cursor(command)
+
+    # 2
+    @staticmethod
+    def ships_visited(human, frm, to):
+        cursor = DB.conn.cursor()
+        cursor.execute(
+            """SELECT name FROM (SELECT starship_id FROM human_travel_history WHERE human_id = {Human} AND ((from_date < '{From}' AND (to_date is null OR to_date > '{From}')) OR (from_date < '{To}' and from_date > '{From}')) GROUP BY starship_id) AS tb INNER JOIN starship ON starship.id = tb.starship_id""".format(
+                Human=human, From=frm, To=to))
+
+        line = """{Human} from {From} to {To} have been on: """.format(Human=human, From=frm, To=to)
+        DB.conn.commit()
+        names = cursor.fetchall()
+        for i in range(len(names) - 1):
+            line += names[i][0] + ', '
+        cursor.close()
+        if names:
+            line += names[-1][0] + '. '
+
+            return line
+        else:
+            return ''
+    
+    # 3 works
+    @staticmethod
+    def get_all_who_theft_me_more_then_n(human, frm, to, n):
+        cursor = DB.conn.cursor()
+        cursor.execute(
+            """SELECT username FROM (SELECT alien_id FROM theft WHERE human_id = {Human} AND date BETWEEN '{From}' AND '{To}' GROUP BY alien_id HAVING COUNT(alien_id) >= {N}) as tb INNER JOIN users ON users.id = tb.alien_id""".format(
+                Human=human, From=frm, To=to, N=n))
+        DB.conn.commit()
+        line = 'Was stolen by: '
+        DB.conn.commit()
+        aliens = cursor.fetchall()
+        for i in range(len(aliens) - 1):
+            line += aliens[i][0] + ', '
+        cursor.close()
+
+        if len(aliens):
+            line += aliens[-1][0] + '. '
+            print('!!!!!!!!!!!!! in get_all_who_theft_me_more_then_n res:', line)
+            return line
+        return ''
+
+    # 4 works
+    @staticmethod
+    def killed_by_me(human, frm, to):
+        cursor = DB.conn.cursor()
+        cursor.execute(
+            """SELECT username FROM (SELECT alien_id FROM murder WHERE human_id = {Human} AND date BETWEEN '{From}' AND '{To}') AS tb INNER JOIN users ON users.id = tb.alien_id""".format(
+                Human=human, From=frm, To=to))
+        DB.conn.commit()
+        line = 'Have murdered: '
+        aliens = cursor.fetchall()
+        for i in range(len(aliens) - 1):
+            line += aliens[i][0] + ', '
+        cursor.close()
+        if aliens:
+            line += aliens[-1][0] + '. '
+            print('!!!!!!!!!!!!! in killed_by_me res:', line)
+            return line
+        else:
+            return "You haven't murdered anyone."
+
+    # 5 - works
+    @staticmethod
+    def theft_and_killed_by_me(human):
+        cursor = DB.conn.cursor()
+        cursor.execute(
+            """SELECT username FROM (SELECT thefts.alien_id FROM
+            (SELECT alien_id FROM theft WHERE human_id = {Human}) AS thefts INNER JOIN
+            (SELECT alien_id FROM murder WHERE human_id = {Human}) AS murdered ON thefts.alien_id = murdered.alien_id) AS tb
+            INNER JOIN users ON users.id = tb.alien_id""".format(Human=human))
+        DB.conn.commit()
+        line = 'Theft me and I took revenge on: '
+        aliens = cursor.fetchall()
+        for i in range(len(aliens) - 1):
+            line += aliens[i][0] + ', '
+        if len(aliens) > 0:
+            line += aliens[-1][0] + '. '
+        cursor.close()
+        if aliens:
+            return line
+        return 'No one have theft me and I have killed him.'
+
+    # 10 - works !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    @staticmethod
+    def experimented_by_n(human, frm, to, n):
+        cursor = DB.conn.cursor()
+        cursor.execute(
+            """SELECT count(*) FROM experiment INNER JOIN (SELECT id, count(id) as cnt FROM groups GROUP BY id) AS tb ON experiment.group_id = tb.id  WHERE group_id = {Human} AND date BETWEEN '{From}' AND '{To}' AND cnt >= {N}""".format(
+                Human=human, From=frm, To=to, N=n))
+
+        DB.conn.commit()
+        id = cursor.fetchall()
+        cursor.close()
+        return 'Have taken part in ' + str(id[0][0]) + ' experiments from ' + str(frm) + ' to ' + str(to) + '. with more then ' + str(n) + 'alien`s.'
+    
+    # 9 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    @staticmethod
+    def excursions_by_alien_with_more_then_n(alien, frm, to, n):
+        cursor = DB.conn.cursor()
+        cursor.execute(
+            """SELECT count(*) FROM excursion INNER JOIN (SELECT id, count(id) as cnt FROM groups GROUP BY id) AS tb ON excursion.group_id = tb.id  WHERE group_id = {Alien} AND date BETWEEN '{From}' AND '{To}' AND cnt >= {N}""".format(
+                Alien=alien, From=frm, To=to, N=n))
+
+        DB.conn.commit()
+        id = cursor.fetchall()
+        cursor.close()
+        return 'Have lead ' + str(id[0][0]) + ' excursion with more then ' + str(n) + ' people from ' + str(frm) + ' to ' + str(to) + '. '
+
 
 
 
