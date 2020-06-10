@@ -284,7 +284,7 @@ def human_logs_experiment():
 def alien_actions_steal():
     form = AlienActionStealForm()
     if form.validate_on_submit():
-        DB.alien_take_human_to_ship(current_user.id, fo)
+        DB.alien_take_human_to_ship(current_user.id, form)
         flash('New user was added.')
     return render_template("alien_actions/steal.html", form=form,
                            user=current_user)
