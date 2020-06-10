@@ -174,8 +174,11 @@ def admin_log_total_steals():
 @login_required
 def human_actions_escape():
     form = HumanActionEscapeForm()
-    # if form.validate_on_submit():
-    # flash('New user was added.')
+    if form.validate_on_submit():
+        if DB.escape_from_ship(current_user.id):
+            flash('You escaped.')
+            return redirect(url_for(current_user.role))
+        flash("You didn't escape.")
     return render_template("human_actions/escape.html", form=form,
                            user=current_user)
 

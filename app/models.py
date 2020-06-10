@@ -28,7 +28,10 @@ class DB:
         cursor = DB.conn.cursor()
         cursor.execute(command)
         DB.conn.commit()
-        response = cursor.fetchall()
+        try:
+            response = cursor.fetchall()
+        except:
+            response = None
         cursor.close()
         return response
 
@@ -124,6 +127,23 @@ class DB:
             role = None
 
         return role
+
+    @staticmethod
+    def get_if_alive_by_id(id):
+        
+        cursor = DB.conn.cursor()
+        cursor.execute(
+                """SELECT alive FROM users WHERE id = {U};""".format(
+                        U=id))
+        alive = cursor.fetchall()
+        try:
+            alive = alive[0][0]
+        except Exception:
+            alive = None
+        cursor.close()
+        print("get_if_alive_by_id", id, alive, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
+        return alive
 
     @staticmethod
     def get_all_aliens():
@@ -239,6 +259,10 @@ class DB:
             return False
         return True
 
+    @staticmethod
+    def escape_from_ship(user_id):
+        pass
+
 
 
 @login.user_loader
@@ -254,15 +278,17 @@ class User(UserMixin):
         if _id is not None:
             self.password_hash = DB.get_hash_by_username(username)
             self.role = DB.get_role_by_id(self.id)
+            # self.alive = DB.get_if_alive_by_id(self.id)
         else:
             self.password_hash = None
             self.role = None
-             
+            # self.alive = False
+
     def if_exists(self):
         return self.password_hash
 
     def authenticate(self, password):
-        res = check_password_hash(self.password_hash, str(password))
+        res = check_password_hash(self.password_hash, str(password)) # and self.alive
         return res
 
     def get_id(self):
